@@ -1,9 +1,0 @@
-Running Tetrix:
-
-For linux systems, make sure Tetrix.sh has system permissions to be executed.
-
-$ sudo chmod +x Tetrix.sh
-
-Then run
-
-$ ./Tetrix.sh
