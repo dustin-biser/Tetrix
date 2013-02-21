@@ -8,7 +8,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Tetrix/externals/lwjgl/native/linux"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="externals/slick2D/slick.jar" sourcepath="externals/slick2D/slick2d-src.zip"/>
+	<classpathentry kind="lib" path="externals/slick2D/slick.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="externals/PNGDecoder/PNGDecoder.jar"/>
 	<classpathentry kind="output" path="target"/>
