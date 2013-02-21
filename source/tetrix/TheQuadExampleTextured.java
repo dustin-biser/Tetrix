@@ -1,3 +1,5 @@
+package tetrix;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -19,6 +21,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
+
+import tetrix.datastructures.TexturedVertex;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
@@ -172,9 +176,9 @@ public class TheQuadExampleTextured {
 	
 	private void setupShaders() {		
 		// Load the vertex shader
-		vsId = this.loadShader("source/shaders/vertex.glsl", GL_VERTEX_SHADER);
+		vsId = this.loadShader("source/tetrix/shaders/vertex.glsl", GL_VERTEX_SHADER);
 		// Load the fragment shader
-		fsId = this.loadShader("source/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
+		fsId = this.loadShader("source/tetrix/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders
 		pId = glCreateProgram();

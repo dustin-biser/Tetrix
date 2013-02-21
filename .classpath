@@ -4,7 +4,6 @@
 	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl.jar" sourcepath="externals/lwjgl/lwjgl-source-2.8.5.zip">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Tetrix/externals/lwjgl/lwjgl-docs-2.8.5.zip!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Tetrix/externals/lwjgl/native/linux"/>
 		</attributes>
 	</classpathentry>
