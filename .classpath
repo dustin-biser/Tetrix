@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="source"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl.jar" sourcepath="externals/lwjgl/lwjgl-source-2.8.5.zip">
 		<attributes>
@@ -10,5 +11,6 @@
 	<classpathentry kind="lib" path="externals/slick2D/slick.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="externals/PNGDecoder/PNGDecoder.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

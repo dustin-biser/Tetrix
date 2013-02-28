@@ -14,13 +14,10 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 
-import tetrix.entities.ConcreteShape;
-import tetrix.entities.ShapeConfiguration;
-
-public class RotatingShapesDemo {
+public class CopyOf_RotatingShapesDemo {
 	
 	public static void main(String[] args) {
-		new RotatingShapesDemo();
+		new CopyOf_RotatingShapesDemo();
 	}
 	
 	// Setup variables
@@ -38,11 +35,11 @@ public class RotatingShapesDemo {
 	private int indicesCount = 0;
 	private float blockHalfWidth = 0.05f;
 	
-	public RotatingShapesDemo() {
+	public CopyOf_RotatingShapesDemo() {
 		// Initialize OpenGL (Display)
 		this.setupOpenGL();
 		
-		this.setupShapes();
+		this.setupQuad();
 		
 		while (!Display.isCloseRequested()) {
 			// Do a single loop (logic/render)
@@ -84,11 +81,7 @@ public class RotatingShapesDemo {
 		glViewport(0, 0, GL_VIEWPORT_WIDTH, GL_VIEWPORT_HEIGHT);
 	}
 	
-	public void setupShapes() {
-		ConcreteShape shape = new ConcreteShape();
-		
-		
-		
+	public void setupQuad() {
 		// Vertices, the order is not important.
 		float[] blockVertices = {
 			   -blockHalfWidth,  blockHalfWidth, 0f,	// Left top			ID: 0
