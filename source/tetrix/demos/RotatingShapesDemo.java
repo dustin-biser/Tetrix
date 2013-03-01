@@ -14,9 +14,6 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 
-import tetrix.entities.ConcreteShape;
-import tetrix.entities.ShapeConfiguration;
-
 public class RotatingShapesDemo {
 	
 	public static void main(String[] args) {
@@ -85,10 +82,6 @@ public class RotatingShapesDemo {
 	}
 	
 	public void setupShapes() {
-		ConcreteShape shape = new ConcreteShape();
-		
-		
-		
 		// Vertices, the order is not important.
 		float[] blockVertices = {
 			   -blockHalfWidth,  blockHalfWidth, 0f,	// Left top			ID: 0
