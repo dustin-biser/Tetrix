@@ -21,13 +21,13 @@ public class Shape_Test {
 
 	@Test
 	public void test_initial_RotationState() {
-		assertEquals(iShape.getRotationState(), RotationState.SpawnState);
+		assertEquals(iShape.getRotationState(), RotationState.SPAWN_STATE);
 	}
 	
 	@Test
 	public void test_set_RotationState() {
-		iShape.setRotationState(RotationState.SecondRotation);
-		assertEquals(iShape.getRotationState(), RotationState.SecondRotation);
+		iShape.setRotationState(RotationState.SECOND_ROTATION);
+		assertEquals(iShape.getRotationState(), RotationState.SECOND_ROTATION);
 	}
 	
 	@Test
