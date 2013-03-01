@@ -2,7 +2,7 @@ package tetrix.entities;
 
 
 /**
- * Represents the position of a block, given by row and column coordinates.
+ * Representation of a block, which contains column, and row coordinates.
  * @author Dustin Biser
  *
  */
@@ -11,20 +11,20 @@ public class Block {
 	private int row;
 	private int column;
 	
-	public Block(int row, int column){
-		this.row = row;
+	public Block(int column, int row){
 		this.column = column;
+		this.row = row;
 	}
 	
 	/**
-	 * Increments Block's row and column positions by rowOffset and colOffset,
-	 * respectively.
-	 * @param rowOffset - number of rows to shift Block by.
+	 * Increments Block's column and row positions by colOffset and rowOffset,
+	 * respectively, which can be positive, negative, or zero.
 	 * @param colOffset - number of columns to shift Block by.
+	 * @param rowOffset - number of rows to shift Block by.
 	 */
-	public void translate(int rowOffset, int colOffset){
-		row = row + rowOffset;
+	public void translate(int colOffset, int rowOffset){
 		column = column + colOffset;
+		row = row + rowOffset;
 	}
 	
 	/**
@@ -43,5 +43,20 @@ public class Block {
 	public int getColumn() {
 		return column;
 	}
+	
+	/**
+	 * 
+	 * @param row - row position for Block.
+	 */
+	public void setRow(int row){
+		this.row = row;
+	}
 
+	/**
+	 * 
+	 * @param column - column position for Block.
+	 */
+	public void setColumn(int column){
+		this.column = column;
+	}
 }
