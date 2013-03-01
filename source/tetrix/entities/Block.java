@@ -1,33 +1,47 @@
 package tetrix.entities;
 
+
+/**
+ * Represents the position of a block, given by row and column coordinates.
+ * @author Dustin Biser
+ *
+ */
 public class Block {
-	private static Block blockInstance;
-	private float halfWidth;
 	
-	float[] vertices = {
-		   -halfWidth,  halfWidth, 0f,	// Left top
-		   -halfWidth, -halfWidth, 0f,	// Left bottom
-			halfWidth, -halfWidth, 0f,	// Right bottom
-			halfWidth,  halfWidth, 0f	// Right top
-	};
+	private int row;
+	private int column;
 	
-	private Block(){
-		halfWidth = 0.5f;
+	public Block(int row, int column){
+		this.row = row;
+		this.column = column;
 	}
 	
-	public static Block getInstance(){
-		if(blockInstance == null)
-			blockInstance = new Block();
-		
-		return blockInstance;
+	/**
+	 * Increments Block's row and column positions by rowOffset and colOffset,
+	 * respectively.
+	 * @param rowOffset - number of rows to shift Block by.
+	 * @param colOffset - number of columns to shift Block by.
+	 */
+	public void translate(int rowOffset, int colOffset){
+		row = row + rowOffset;
+		column = column + colOffset;
 	}
 	
-	public float[] getVertices(){
-		return vertices;
+	/**
+	 * 
+	 * @return Block's row position.
+	 */
+	public int getRow() {
+		return row;
 	}
+
 	
-	public void setHalfWidth(float halfWidth){
-		this.halfWidth = halfWidth;
+	/**
+	 * 
+	 * @return Block's column position.
+	 */
+	public int getColumn() {
+		return column;
 	}
-	
+
 }

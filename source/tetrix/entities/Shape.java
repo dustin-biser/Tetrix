@@ -1,14 +1,19 @@
 package tetrix.entities;
 
-public abstract class Shape {
-	protected final ShapeConfiguration[] configurations;
-	protected ShapeConfiguration currentConfiguration;
+import tetrix.entities.rotations.RotationState;
+
+/**
+ * 
+ * @author Dustin Biser 
+ *
+ */
+public class Shape {
+	private Block blockA;
+	private Block blockB;
+	private Block blockC;
+	private Block blockD;
 	
-	public Shape(ShapeConfiguration[] configurations){
-		this.configurations = configurations;
-	}
+	private RotationState rotationState;
 	
-	public ShapeConfiguration[] getShapeConfigurations(){
-		return (configurations == null) ? null : configurations;
-	}
+	private int[] spawnStateBlockOffsets;
 }
