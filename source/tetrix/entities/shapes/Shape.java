@@ -134,14 +134,14 @@ public abstract class Shape {
 	 * positions of each of the 4 Blocks that compose this Shape.  The items in the returned array
 	 * are mapped to Block coordinates as follows:<br>
 	 * <pre>
-	 * int[0] = block-A-col
-	 * int[1] = block-A-row
-	 * int[2] = block-B-col
-	 * int[3] = block-B-row
-	 * int[4] = block-C-col
-	 * int[5] = block-C-row
-	 * int[6] = block-D-col
-	 * int[7] = block-D-row
+	 * int[0] = block-A column
+	 * int[1] = block-A row
+	 * int[2] = block-B column
+	 * int[3] = block-B row
+	 * int[4] = block-C column
+	 * int[5] = block-C row
+	 * int[6] = block-D column
+	 * int[7] = block-D row
 	 * </pre>
 	 * @return integer array containing column-row positions for each Block.
 	 */

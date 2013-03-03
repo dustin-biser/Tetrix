@@ -128,6 +128,22 @@ public class JShape_Test {
 		assertArrayEquals(expected, positions);
 	}
 	
+	@Test
+	public void test_reset5(){
+		shape.moveLeft();
+		shape.moveDown();
+		shape.moveLeft();
+		shape.moveRight();
+		shape.translate(6, 5);
+		
+		shape.reset();
+		
+		int[] positions = shape.getBlockPositions();
+		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
+		
+		assertArrayEquals(expected, positions);
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////////////	
 	// Test moveLeft, moveRight, moveDown
 	/////////////////////////////////////////////////////////////////////////////////////	
@@ -191,6 +207,29 @@ public class JShape_Test {
 		
 		int[] positions = shape.getBlockPositions();
 		int[] expected = {0,-2, 0,-3, 1,-3, 2,-3};
+		
+		assertArrayEquals(expected, positions);
+	}
+	
+	@Test
+	public void test_moveLeft_moveRight(){
+		shape.moveLeft();
+		shape.moveRight();
+		
+		int[] positions = shape.getBlockPositions();
+		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
+		
+		assertArrayEquals(expected, positions);
+	}
+	
+	@Test
+	public void test_moveRight_moveDown_moveLeft(){
+		shape.moveRight();
+		shape.moveDown();
+		shape.moveLeft();
+		
+		int[] positions = shape.getBlockPositions();
+		int[] expected = {0,-1, 0,-2, 1,-2, 2,-2};
 		
 		assertArrayEquals(expected, positions);
 	}
