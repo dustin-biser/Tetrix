@@ -2,7 +2,7 @@ package tetrix.entities;
 
 /**
  * Enumeration of possible directions.
- * @author Dustin Bisert
+ * @author Dustin Biser
  *
  */
 public enum Direction {

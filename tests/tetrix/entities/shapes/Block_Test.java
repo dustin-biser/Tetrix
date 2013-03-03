@@ -1,11 +1,11 @@
-package tetrix.entities;
+package tetrix.entities.shapes;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import tetrix.entities.Block;
+import tetrix.entities.shapes.Block;
 
 public class Block_Test {
 	private Block block;

@@ -1,4 +1,4 @@
-package tetrix.entities;
+package tetrix.entities.shapes;
 
 
 /**

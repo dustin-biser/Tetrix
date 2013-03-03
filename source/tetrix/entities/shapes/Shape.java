@@ -1,5 +1,7 @@
-package tetrix.entities;
+package tetrix.entities.shapes;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tetrix.entities.Direction;
 import tetrix.entities.rotations.RotationState;
 import static tetrix.entities.rotations.RotationState.*;
 
@@ -11,12 +13,14 @@ import static tetrix.entities.rotations.RotationState.*;
  * @author Dustin Biser
  * 
  */
-public class Shape {
+public abstract class Shape {
 	// Blocks A,B,C,D, corresponding to indices 0,1,2,3 respectively.
 	private Block[] blocks;
-
+	
 	private RotationState rotationState;
 	private Direction[] constructionDirections;
+	
+	protected ShapeType shapeType;
 
 	/**
 	 * Constructs a Shape with RotationState = SPAWN_STATE using Direction offsets.
@@ -29,7 +33,9 @@ public class Shape {
 	 * @param bToC_Offset - Direction adjacent to Block-B to place Block-C
 	 * @param cToD_Offset - Direction adjacent to Block-C to place Block-D
 	 */
-	Shape(Direction aToB_Offset, Direction bToC_Offset, Direction cToD_Offset){
+	Shape(Direction aToB_Offset, Direction bToC_Offset,
+			Direction cToD_Offset) {
+		
 		int rowOffset = 0;
 		int colOffset = 0;
 		
@@ -114,13 +120,13 @@ public class Shape {
 	public RotationState getRotationState() {
 		return rotationState;
 	}
-
+	
 	/**
-	 * Sets the RotationState for this Shape.
-	 * @param rotationState - RotationState
+	 * Gets the ShapeType of this Shape. 
+	 * @return ShapeType
 	 */
-	public void setRotationState(RotationState rotationState) {
-		this.rotationState = rotationState;
+	public ShapeType getShapeType(){
+		return shapeType;
 	}
 	
 	/**
@@ -150,6 +156,24 @@ public class Shape {
 		return result;
 	}
 	
+	public void moveLeft(){
+		for(Block block : blocks){
+			block.translate(-1, 0);
+		}
+	}
+	
+	public void moveRight(){
+		for(Block block : blocks){
+			block.translate(1, 0);
+		}
+	}
+	
+	public void moveDown(){
+		for(Block block : blocks){
+			block.translate(0, -1);
+		}
+	}
+	
 	/**
 	 * Translate all Blocks by colOffset number of columns and rowOffset number of
 	 * rows.  Assuming k is an integer > 0, then
@@ -164,5 +188,25 @@ public class Shape {
 		for(Block block : blocks){
 			block.translate(colOffset, rowOffset);
 		}
+	}
+	
+	void translateA(int colOffset, int rowOFfset){
+		// TODO implement this method.
+		throw new NotImplementedException();
+	}
+	
+	void translateB(int colOffset, int rowOFfset){
+		// TODO implement this method.
+		throw new NotImplementedException();
+	}
+	
+	void translateC(int colOffset, int rowOFfset){
+		// TODO implement this method.
+		throw new NotImplementedException();
+	}
+	
+	void translateD(int colOffset, int rowOFfset){
+		// TODO implement this method.
+		throw new NotImplementedException();
 	}
 }
