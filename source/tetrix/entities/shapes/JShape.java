@@ -5,7 +5,7 @@ import static tetrix.entities.shapes.ShapeType.*;
 
 
 /**
- * Representation of a J shaped tetromino.
+ * Representation of a J shaped tetromino, with ShapeType J.
  * @author Dustin Biser
  *
  */

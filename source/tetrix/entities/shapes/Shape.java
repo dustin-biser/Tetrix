@@ -122,6 +122,14 @@ public abstract class Shape {
 	}
 	
 	/**
+	 * Sets the RotationState for the Shape. 
+	 * @param rotationState
+	 */
+	public void setRotationState(RotationState rotationState){
+		this.rotationState = rotationState;
+	}
+	
+	/**
 	 * Gets the ShapeType of this Shape. 
 	 * @return ShapeType
 	 */
@@ -130,9 +138,9 @@ public abstract class Shape {
 	}
 	
 	/**
-	 * Returns an integer array with 8 elements representing the current column-row
-	 * positions of each of the 4 Blocks that compose this Shape.  The items in the returned array
-	 * are mapped to Block coordinates as follows:<br>
+	 * Returns a new integer array with 8 elements representing the current
+	 * column-row positions of each of the 4 Blocks that compose this Shape.  The
+	 * items in the returned array are mapped to Block coordinates as follows:<br>
 	 * <pre>
 	 * int[0] = block-A column
 	 * int[1] = block-A row
@@ -181,8 +189,8 @@ public abstract class Shape {
 	 * <li>colOffset = -k, moves all Blocks to the Left by k columns.</li>
 	 * <li>rowOffset = k, moves all Blocks Up by k rows.</li>
 	 * <li>rowOffset = -k, moves all Blocks Down by k rows.</li>
-	 * @param colOffset - number of columns to shift Shape.
-	 * @param rowOffset - number or rows to shift Shape.
+	 * @param colOffset - number of columns to translate Shape by.
+	 * @param rowOffset - number of rows to translate Shape by.
 	 */
 	public void translate(int colOffset, int rowOffset){
 		for(Block block : blocks){
@@ -190,23 +198,19 @@ public abstract class Shape {
 		}
 	}
 	
-	void translateA(int colOffset, int rowOFfset){
-		// TODO implement this method.
-		throw new NotImplementedException();
+	void translateA(int colOffset, int rowOffset){
+		blocks[0].translate(colOffset, rowOffset);
 	}
 	
-	void translateB(int colOffset, int rowOFfset){
-		// TODO implement this method.
-		throw new NotImplementedException();
+	void translateB(int colOffset, int rowOffset){
+		blocks[1].translate(colOffset, rowOffset);
 	}
 	
-	void translateC(int colOffset, int rowOFfset){
-		// TODO implement this method.
-		throw new NotImplementedException();
+	void translateC(int colOffset, int rowOffset){
+		blocks[2].translate(colOffset, rowOffset);
 	}
 	
-	void translateD(int colOffset, int rowOFfset){
-		// TODO implement this method.
-		throw new NotImplementedException();
+	void translateD(int colOffset, int rowOffset){
+		blocks[3].translate(colOffset, rowOffset);
 	}
 }
