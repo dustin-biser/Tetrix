@@ -44,7 +44,7 @@ public enum RotationTransition {
 	 * @return RotationTransition
 	 */
 	public static RotationTransition getTransition(RotationState startState,
-			RotationState endState){
+			RotationState endState) throws InvalidParameterException {
 		
 		if (startState == SPAWN_STATE){
 			if (endState == LEFT_OF_SPAWN){
