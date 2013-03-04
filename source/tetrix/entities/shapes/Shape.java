@@ -1,6 +1,5 @@
 package tetrix.entities.shapes;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tetrix.entities.Direction;
 import tetrix.entities.rotations.RotationState;
 import static tetrix.entities.rotations.RotationState.*;
