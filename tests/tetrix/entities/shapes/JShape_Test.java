@@ -10,14 +10,15 @@ import tetrix.entities.shapes.Shape;
 import tetrix.entities.shapes.ShapeType;
 
 import static tetrix.entities.rotations.RotationState.*;
-import static tetrix.entities.Direction.*;
 
 public class JShape_Test {
 	private Shape shape;
+	private int[] expectedPositions;
 	
 	@Before
 	public void setUp() throws Exception {
 		shape = new JShape();
+		expectedPositions = shape.getBlockPositions();
 	}
 
 	@Test
@@ -26,16 +27,57 @@ public class JShape_Test {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test getShapeType()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_getShapeType(){
+		assertEquals(ShapeType.J, shape.getShapeType());
+	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test getRotationState()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_getRotationState(){
+		assertEquals(SPAWN_STATE, shape.getRotationState());
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test setRotationState()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_setRotationState_1(){
+		shape.setRotationState(RIGHT_OF_SPAWN);
+		
+		assertEquals(RIGHT_OF_SPAWN, shape.getRotationState());
+	}
+	
+	@Test
+	public void test_setRotationState_2(){
+		shape.setRotationState(SECOND_ROTATION);
+		
+		assertEquals(SECOND_ROTATION, shape.getRotationState());
+	}
+	
+	@Test
+	public void test_setRotationState_3(){
+		shape.setRotationState(LEFT_OF_SPAWN);
+		
+		assertEquals(LEFT_OF_SPAWN, shape.getRotationState());
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
 	// Test getBlockPositions()
 	/////////////////////////////////////////////////////////////////////////////////////	
 	@Test
 	public void test_getBlockPositions(){
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		for(int i = 0; i < expected.length; i++){
-			assertEquals(expected[i], positions[i]);
-		}
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////	
@@ -46,9 +88,8 @@ public class JShape_Test {
 		shape.translate(0,0);
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -56,9 +97,11 @@ public class JShape_Test {
 		shape.translate(1,1);
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {1,1, 1,0, 2,0, 3,0};
+		for(int i = 0; i < expectedPositions.length; i++){
+			expectedPositions[i] += 1;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -66,9 +109,125 @@ public class JShape_Test {
 		shape.translate(-1,-2);
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {-1,-2, -1,-3, 0,-3, 1,-3};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i]     += -1;
+			expectedPositions[2*i + 1] += -2;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	@Test
+	public void test_translate_neg2_2(){
+		shape.translate(-2, 2);
+		
+		int[] positions = shape.getBlockPositions();
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i]     += -2;
+			expectedPositions[2*i + 1] += 2;
+		}
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test translateA()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	@Test
+	public void test_translateA_0_0(){
+		shape.translateA(0,0);
+		
+		int[] positions = shape.getBlockPositions();
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	@Test
+	public void test_translateA_1_neg1(){
+		shape.translateA(1,-1);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[0] += 1;
+		expectedPositions[1] += -1;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test translateB()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_translateB_1_0(){
+		shape.translateB(1,0);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[2] += 1;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	@Test
+	public void test_translateB_neg1_neg1(){
+		shape.translateB(-1,-1);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[2] += -1;
+		expectedPositions[3] += -1;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test translateC()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_translateC_neg2_neg4(){
+		shape.translateC(-2,-4);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[4] += -2;
+		expectedPositions[5] += -4;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	@Test
+	public void test_translateC_2_4(){
+		shape.translateC(2,4);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[4] += 2;
+		expectedPositions[5] += 4;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////	
+	// Test translateD()
+	/////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void test_translateD_0_neg5(){
+		shape.translateD(0,-5);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[6] += 0;
+		expectedPositions[7] += -5;
+		
+		assertArrayEquals(expectedPositions, positions);
+	}
+	
+	@Test
+	public void test_translateD_2_2(){
+		shape.translateD(2,2);
+		
+		int[] positions = shape.getBlockPositions();
+		expectedPositions[6] += 2;
+		expectedPositions[7] += 2;
+		
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////	
@@ -79,9 +238,8 @@ public class JShape_Test {
 	public void test_reset_no_translations(){
 		shape.reset();
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -90,9 +248,8 @@ public class JShape_Test {
 		shape.reset();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -101,9 +258,8 @@ public class JShape_Test {
 		shape.reset();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -112,9 +268,8 @@ public class JShape_Test {
 		shape.reset();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -123,9 +278,8 @@ public class JShape_Test {
 		shape.reset();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -139,9 +293,8 @@ public class JShape_Test {
 		shape.reset();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////	
@@ -153,9 +306,11 @@ public class JShape_Test {
 		shape.moveLeft();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {-1,0, -1,-1, 0,-1, 1,-1};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i] += -1;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -164,9 +319,11 @@ public class JShape_Test {
 		shape.moveLeft();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {-2,0, -2,-1, -1,-1, 0,-1};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i] += -2;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -174,9 +331,11 @@ public class JShape_Test {
 		shape.moveRight();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {1,0, 1,-1, 2,-1, 3,-1};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i] += 1;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -185,9 +344,11 @@ public class JShape_Test {
 		shape.moveRight();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {2,0, 2,-1, 3,-1, 4,-1};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i] += 2;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -195,9 +356,11 @@ public class JShape_Test {
 		shape.moveDown();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,-1, 0,-2, 1,-2, 2,-2};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i + 1] += -1;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -206,9 +369,11 @@ public class JShape_Test {
 		shape.moveDown();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,-2, 0,-3, 1,-3, 2,-3};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i + 1] += -2;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -217,9 +382,8 @@ public class JShape_Test {
 		shape.moveRight();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,0, 0,-1, 1,-1, 2,-1};
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 	
 	@Test
@@ -229,8 +393,10 @@ public class JShape_Test {
 		shape.moveLeft();
 		
 		int[] positions = shape.getBlockPositions();
-		int[] expected = {0,-1, 0,-2, 1,-2, 2,-2};
+		for(int i = 0; i < expectedPositions.length / 2; i++){
+			expectedPositions[2*i + 1] += -1;
+		}
 		
-		assertArrayEquals(expected, positions);
+		assertArrayEquals(expectedPositions, positions);
 	}
 }
