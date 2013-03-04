@@ -198,19 +198,19 @@ public abstract class Shape {
 		}
 	}
 	
-	void translateA(int colOffset, int rowOffset){
+	public void translateA(int colOffset, int rowOffset){
 		blocks[0].translate(colOffset, rowOffset);
 	}
 	
-	void translateB(int colOffset, int rowOffset){
+	public void translateB(int colOffset, int rowOffset){
 		blocks[1].translate(colOffset, rowOffset);
 	}
 	
-	void translateC(int colOffset, int rowOffset){
+	public void translateC(int colOffset, int rowOffset){
 		blocks[2].translate(colOffset, rowOffset);
 	}
 	
-	void translateD(int colOffset, int rowOffset){
+	public void translateD(int colOffset, int rowOffset){
 		blocks[3].translate(colOffset, rowOffset);
 	}
 }

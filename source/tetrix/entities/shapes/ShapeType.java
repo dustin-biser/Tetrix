@@ -1,7 +1,7 @@
 package tetrix.entities.shapes;
 
 /**
- * Enumeration for all 7 possible Shape Types.
+ * Enumeration of all possible tetromino Shape types.
  * @author Dustin Biser
  *
  */
