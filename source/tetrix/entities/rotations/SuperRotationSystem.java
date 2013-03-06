@@ -11,19 +11,66 @@ import tetrix.entities.shapes.ShapeType;
 public class SuperRotationSystem extends RotationSystem {
 	
 	public SuperRotationSystem(){
-		int initialCapacity = ShapeType.values().length + 1;
-		float loadFactor = 1.0f;
-		
-		// Allocate a new HashMap with initialCapacity and loadFactor so that it does
-		// not double in size when 7 ShapeType keys are added to it.
 		shapeRotationResponses = new
-				HashMap<ShapeType, Map<RotationTransition, TranslationResponse>>(initialCapacity, loadFactor);
+				HashMap<ShapeType, Map<RotationTransition, TranslationResponse>>();
 		
-		initializeRotationResponses();
+		computeIShapeResponses();
+//		computeJShapeReponses();
+//		computeLShapeReponses();
+//		computeOShapeReponses();
+//		computeSShapeReponses();
+//		computeTShapeReponses();
+//		computeZShapeReponses();
 	}
 	
-	private void initializeRotationResponses(){
-		shapeRotationResponses.put(key, value)
+	/*
+	 * Shape I
+	 * RotationStates: 
+	 *     O          R          2          L
+	 * |-|-|-|-|  |-|-|A|-|  |-|-|-|-|  |-|D|-|-|
+	 * |A|B|C|D|  |-|-|B|-|  |-|-|-|-|  |-|C|-|-|
+	 * |-|-|-|-|  |-|-|C|-|  |D|C|B|A|  |-|B|-|-|
+	 * |-|-|-|-|  |-|-|D|-|  |-|-|-|-|  |-|A|-|-|
+	 * 
+	 * +col (right), +row (up) 
+	 */
+	private void computeIShapeResponses(){
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO
+		translationResponse = new TranslationResponse().translateA( 2,  1)
+													   .translateB( 1,  0)
+													   .translateC( 0, -1)
+													   .translateD(-1, -2);
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR
+		translationResponse = new TranslationResponse().translateA( 1, -2)
+													   .translateB( 0, -1)
+													   .translateC(-1,  0)
+													   .translateD(-2,  1);
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo 
+		translationResponse = new TranslationResponse().translateA(-2, -1)
+													   .translateB(-1,  0)
+													   .translateC( 0,  1)
+													   .translateD( 1,  2);
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL
+		translationResponse = new TranslationResponse().translateA(-1,  2)
+													   .translateB( 0,  1)
+													   .translateC( 1,  0)
+													   .translateD( 2, -1);
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
 	}
 
 	@Override
