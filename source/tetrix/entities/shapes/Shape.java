@@ -28,12 +28,11 @@ public abstract class Shape {
 	 * Block-B, and Block-D is placed adjacent to Block-C.  Each Direction
 	 * parameter can be one of the following {LEFT, RIGHT, UP, DOWN}.
 	 * 
-	 * @param aToB_Offset - Direction adjacent to Block-A to place Block-B
-	 * @param bToC_Offset - Direction adjacent to Block-B to place Block-C
-	 * @param cToD_Offset - Direction adjacent to Block-C to place Block-D
+	 * @param aToB - Direction adjacent to Block-A to place Block-B
+	 * @param bToC - Direction adjacent to Block-B to place Block-C
+	 * @param cToD - Direction adjacent to Block-C to place Block-D
 	 */
-	Shape(Direction aToB_Offset, Direction bToC_Offset,
-			Direction cToD_Offset) {
+	Shape(Direction aToB, Direction bToC, Direction cToD) {
 		
 		int rowOffset = 0;
 		int colOffset = 0;
@@ -44,9 +43,9 @@ public abstract class Shape {
 		blocks[0] = new Block(colOffset, rowOffset);
 		
 		constructionDirections = new Direction[3];
-		constructionDirections[0] = aToB_Offset;
-		constructionDirections[1] = bToC_Offset;
-		constructionDirections[2] = cToD_Offset;
+		constructionDirections[0] = aToB;
+		constructionDirections[1] = bToC;
+		constructionDirections[2] = cToD;
 		
 		Direction direction;
 		
