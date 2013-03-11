@@ -5,9 +5,11 @@ import tetrix.entities.rotations.RotationState;
 import static tetrix.entities.rotations.RotationState.*;
 
 /**
- * Representation of a Tetrix Shape. A Shape has 4 Blocks, labeled A, B, C, and
- * D, respectively.  Each Block has a column-row position such that column
- * positions increase to the right and row positions increase upwards.
+ * Representation of a Tetrix Shape. A Shape has 4 {@link Block} instances,
+ * labeled A, B, C, and D, respectively.  Each Block has a column-row position
+ * such that column positions increase to the right and row positions increase
+ * upwards.  When a Shape object is first created, it's {@link RotationState}
+ * defaults to <code>RotationState.SPAWN_STATE</code>.
  * 
  * @author Dustin Biser
  * 

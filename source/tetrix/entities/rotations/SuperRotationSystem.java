@@ -11,16 +11,48 @@ import tetrix.entities.shapes.ShapeType;
 public class SuperRotationSystem extends RotationSystem {
 	
 	public SuperRotationSystem(){
-		shapeRotationResponses = new
+		this.shapeRotationResponses = new
 				HashMap<ShapeType, Map<RotationTransition, TranslationResponse>>();
 		
 		computeIShapeResponses();
-//		computeJShapeReponses();
-//		computeLShapeReponses();
-//		computeOShapeReponses();
-//		computeSShapeReponses();
-//		computeTShapeReponses();
-//		computeZShapeReponses();
+		computeJShapeReponses();
+		computeLShapeReponses();
+		computeOShapeReponses();
+		computeSShapeReponses();
+		computeTShapeReponses();
+		computeZShapeReponses();
+	}
+
+	@Override
+	public void rotate(Shape shape, Direction direction) throws InvalidParameterException {
+		RotationState startState = shape.getRotationState();
+		RotationState endState;
+
+		switch (direction) {
+		case LEFT:
+			endState = startState.left();
+			break;
+		case RIGHT:
+			endState = startState.right();
+			break;
+		default:
+			throw new InvalidParameterException("Invalid Direction argument." +
+					"Direction must equal LEFT or RIGHT.\n");
+		}
+
+		ShapeType shapeType = shape.getShapeType();
+
+		Map<RotationTransition, TranslationResponse> responseMap =
+				shapeRotationResponses.get(shapeType);
+
+		RotationTransition transition =
+				RotationTransition.getTransition(startState, endState);
+
+		TranslationResponse response = responseMap.get(transition);
+		
+		response.translate(shape);
+
+		shape.setRotationState(endState);
 	}
 	
 	/*
@@ -37,6 +69,7 @@ public class SuperRotationSystem extends RotationSystem {
 	private void computeIShapeResponses(){
 		Map<RotationTransition, TranslationResponse> responseMap =
 				new HashMap<RotationTransition, TranslationResponse>();
+		
 		TranslationResponse translationResponse;
 		
 		// OtoR and RtoO
@@ -71,37 +104,38 @@ public class SuperRotationSystem extends RotationSystem {
 													   .translateD( 2, -1);
 		responseMap.put(RotationTransition.LtoO, translationResponse);
 		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.I, responseMap);
 	}
 
-	@Override
-	public void rotate(Shape shape, Direction direction) throws InvalidParameterException {
-		RotationState startState = shape.getRotationState();
-		RotationState endState;
-
-		switch (direction) {
-		case LEFT:
-			endState = startState.left();
-			break;
-		case RIGHT:
-			endState = startState.right();
-			break;
-		default:
-			throw new InvalidParameterException("Invalid Direction argument." +
-					"Direction must equal LEFT or RIGHT.\n");
-		}
-
-		ShapeType shapeType = shape.getShapeType();
-
-		Map<RotationTransition, TranslationResponse> responseMap =
-				shapeRotationResponses.get(shapeType);
-
-		RotationTransition transition =
-				RotationTransition.getTransition(startState, endState);
-
-		TranslationResponse response = responseMap.get(transition);
+	
+	private void computeZShapeReponses() {
+		// TODO Auto-generated method stub
 		
-		response.translate(shape);
+	}
 
-		shape.setRotationState(endState);
+	private void computeTShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void computeSShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void computeOShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void computeLShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void computeJShapeReponses() {
+		// TODO Auto-generated method stub
+		
 	}
 }

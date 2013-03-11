@@ -32,11 +32,11 @@ public enum RotationTransition {
 	
 	/**
 	 * Returns the RotationTransition that begins with <code>startState</code> and
-	 * ends with <code>endState</code>.  If the arguments passed do not correspond
-	 * to a valid RotationTransition such that
+	 * ends with <code>endState</code>.  A valid RotationTransition is one such that
 	 * <p>
 	 * <code>endState == startState.left() || endState == startState.right()</code>
 	 * </p>
+	 * If the arguments passed do not satisfy the condition above,
 	 * then an <code>InvalidParameterException</code> is thrown.
 	 * 
 	 * @param startState - RotationState before the rotation.
