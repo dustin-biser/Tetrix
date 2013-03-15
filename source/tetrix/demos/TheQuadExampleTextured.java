@@ -23,6 +23,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 import tetrix.datastructures.TexturedVertex;
+import tetrix.utilities.ShaderUtils;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
@@ -176,9 +177,9 @@ public class TheQuadExampleTextured {
 	
 	private void setupShaders() {		
 		// Load the vertex shader
-		vsId = this.loadShader("source/tetrix/shaders/vertex.glsl", GL_VERTEX_SHADER);
+		vsId = ShaderUtils.loadShader("source/tetrix/shaders/vertex.glsl", GL_VERTEX_SHADER);
 		// Load the fragment shader
-		fsId = this.loadShader("source/tetrix/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
+		fsId = ShaderUtils.loadShader("source/tetrix/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders
 		pId = glCreateProgram();
@@ -284,37 +285,6 @@ public class TheQuadExampleTextured {
 		this.exitOnGLError("destroyOpenGL");
 		
 		Display.destroy();
-	}
-	
-	private int loadShader(String filename, int type) {
-		StringBuilder shaderSource = new StringBuilder();
-		int shaderID = 0;
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
-			}
-			reader.close();
-		} catch (IOException e) {
-			System.err.println("Could not read file.");
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		
-		shaderID = glCreateShader(type);
-		glShaderSource(shaderID, shaderSource);
-		glCompileShader(shaderID);
-		
-		if (glGetShaderi(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
-			System.err.println("Could not compile shader.");
-			System.exit(-1);
-		}
-		
-		this.exitOnGLError("loadShader");
-		
-		return shaderID;
 	}
 	
 	private int loadPNGTexture(String filename, int textureUnit) {
