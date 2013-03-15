@@ -14,12 +14,10 @@ import tetrix.entities.shapes.Shape;
 public class SuperRotationSystem_Test {
 	private Shape shapeI;
 	private RotationSystem rotationSystem = new SuperRotationSystem();
-	private int[] expectedBlockPositions;
 	
 	@Before
 	public void setUp() throws Exception {
 		shapeI = new IShape();
-		expectedBlockPositions = shapeI.getBlockPositions();
 	}
 
 	@Test(expected=InvalidParameterException.class)
