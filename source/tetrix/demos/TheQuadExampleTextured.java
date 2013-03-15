@@ -307,7 +307,7 @@ public class TheQuadExampleTextured {
 		glShaderSource(shaderID, shaderSource);
 		glCompileShader(shaderID);
 		
-		if (glGetShader(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
+		if (glGetShaderi(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
 			System.err.println("Could not compile shader.");
 			System.exit(-1);
 		}
