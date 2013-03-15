@@ -14,6 +14,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL20;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -46,7 +48,7 @@ public class TheQuadExampleTextured {
 	// Shader variables
 	private int vsId = 0;
 	private int fsId = 0;
-	private int pId = 0;
+	private int programId = 0;
 	// Texture variables
 	private int[] texIds = new int[] {0, 0};
 	private int textureSelector = 0;
@@ -182,19 +184,20 @@ public class TheQuadExampleTextured {
 		fsId = ShaderUtils.loadShader("source/tetrix/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders
-		pId = glCreateProgram();
-		glAttachShader(pId, vsId);
-		glAttachShader(pId, fsId);
-		glLinkProgram(pId);
+		programId = glCreateProgram();
+		glAttachShader(programId, vsId);
+		glAttachShader(programId, fsId);
+		
+		ShaderUtils.linkProgram(programId);
 
 		// Position information will be attribute 0
-		glBindAttribLocation(pId, 0, "in_Position");
+		glBindAttribLocation(programId, 0, "in_Position");
 		// Color information will be attribute 1
-		glBindAttribLocation(pId, 1, "in_Color");
+		glBindAttribLocation(programId, 1, "in_Color");
 		// Textute information will be attribute 2
-		glBindAttribLocation(pId, 2, "in_TextureCoord");
+		glBindAttribLocation(programId, 2, "in_TextureCoord");
 		
-		glValidateProgram(pId);
+		glValidateProgram(programId);
 		
 		this.exitOnGLError("setupShaders");
 	}
@@ -219,7 +222,7 @@ public class TheQuadExampleTextured {
 		// Render
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glUseProgram(pId);
+		glUseProgram(programId);
 		
 		// Bind the texture
 		glActiveTexture(GL_TEXTURE0);
@@ -256,12 +259,12 @@ public class TheQuadExampleTextured {
 		
 		// Delete the shaders
 		glUseProgram(0);
-		glDetachShader(pId, vsId);
-		glDetachShader(pId, fsId);
+		glDetachShader(programId, vsId);
+		glDetachShader(programId, fsId);
 		
 		glDeleteShader(vsId);
 		glDeleteShader(fsId);
-		glDeleteProgram(pId);
+		glDeleteProgram(programId);
 		
 		// Select the VAO
 		glBindVertexArray(vaoId);

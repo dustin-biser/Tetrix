@@ -44,4 +44,17 @@ public class ShaderUtils {
 		return shaderID;
 	}	
 	
+	public static void linkProgram(int programId){
+		GL20.glLinkProgram(programId);
+		
+		if (GL20.glGetProgrami(programId, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
+			int maxInfoLength = 1024;
+			StringBuilder message = new StringBuilder();
+			message.append("Could not link shader program:\n");
+			message.append(GL20.glGetProgramInfoLog(programId, maxInfoLength));
+			
+			System.err.println(message);
+			System.exit(-1);
+		}
+	}
 }
