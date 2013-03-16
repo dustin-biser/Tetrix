@@ -118,8 +118,10 @@ public class RotatingShapesDemo {
 		vboId = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+		
 		// Put the VBO in the attributes list at index 0
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+		
 		// Deselect (bind to 0) the VBO
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
@@ -130,6 +132,7 @@ public class RotatingShapesDemo {
 		vboIndicesId = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+		
 		// Deselect (bind to 0) the VBO
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
