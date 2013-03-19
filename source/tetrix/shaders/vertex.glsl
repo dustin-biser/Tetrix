@@ -6,7 +6,6 @@ uniform mat4 modelMatrix;
 
 in vec4 in_Position;
 in vec4 in_Color;
-in vec2 in_TextureCoord;
 
 out vec4 pass_Color;
 
