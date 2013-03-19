@@ -8,6 +8,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 public class ShaderUtils {
+	
+	/**
+	 * Reads in the shader file, compiles it, and returns a shader ID if successful.
+	 * @param filename - path String to shader file, relative to top level Tetrix folder.
+	 * @param type - Specifies the type of shader to be created. Must be one of
+	 * GL_VERTEX_SHADER​, GL_TESS_CONTROL_SHADER​, GL_TESS_EVALUATION_SHADER​,
+	 * GL_GEOMETRY_SHADER​, or GL_FRAGMENT_SHADER​.
+	 * @return shader ID of the loaded shader program.
+	 */
 	public static int loadShader(String filename, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		int shaderID = 0;
@@ -44,6 +53,11 @@ public class ShaderUtils {
 		return shaderID;
 	}	
 	
+	/**
+	 * Links the shader program referenced by <code>programId</code>, and reports any
+	 * errors if found to the standard error output stream.
+	 * @param programId - handle to the shader program.
+	 */
 	public static void linkProgram(int programId){
 		GL20.glLinkProgram(programId);
 		
