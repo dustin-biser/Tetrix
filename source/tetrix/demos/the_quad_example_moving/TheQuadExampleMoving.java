@@ -25,6 +25,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import tetrix.datastructures.TexturedVertex;
+import tetrix.utilities.GLUtils;
 import tetrix.utilities.ShaderUtils;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
@@ -38,8 +39,8 @@ public class TheQuadExampleMoving {
 	
 	// Setup variables
 	private final String WINDOW_TITLE = "The Quad: Moving";
-	private final int WIDTH = 320;
-	private final int HEIGHT = 200;
+	private final int WIDTH = 800;
+	private final int HEIGHT = 600;
 	private final double PI = 3.14159265358979323846;
 	// Quad variables
 	private int vaoId = 0;
@@ -92,22 +93,14 @@ public class TheQuadExampleMoving {
 	}
 
 	private void setupMatrices() {
-		// Setup projection matrix
-		projectionMatrix = new Matrix4f();
 		float fieldOfView = 60f;
 		float aspectRatio = (float)WIDTH / (float)HEIGHT;
 		float near_plane = 0.1f;
 		float far_plane = 100f;
 		
-		float y_scale = this.coTangent(this.degreesToRadians(fieldOfView / 2f));
-		float x_scale = y_scale / aspectRatio;
-		float frustum_length = far_plane - near_plane;
-		
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((far_plane + near_plane) / frustum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * near_plane * far_plane) / frustum_length);
+		// Setup projection matrix
+		projectionMatrix = GLUtils.createProjectionMatrix(aspectRatio, fieldOfView,
+				near_plane, far_plane);
 		
 		// Setup view matrix
 		viewMatrix = new Matrix4f();
@@ -421,37 +414,6 @@ public class TheQuadExampleMoving {
 		Display.destroy();
 	}
 	
-	private int loadShader(String filename, int type) {
-		StringBuilder shaderSource = new StringBuilder();
-		int shaderID = 0;
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filename));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
-			}
-			reader.close();
-		} catch (IOException e) {
-			System.err.println("Could not read file.");
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		
-		shaderID = GL20.glCreateShader(type);
-		GL20.glShaderSource(shaderID, shaderSource);
-		GL20.glCompileShader(shaderID);
-		
-		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			System.err.println("Could not compile shader.");
-			System.exit(-1);
-		}
-		
-		this.exitOnGLError("loadShader");
-		
-		return shaderID;
-	}
-	
 	private int loadPNGTexture(String filename, int textureUnit) {
 		ByteBuffer buf = null;
 		int tWidth = 0;
@@ -506,10 +468,6 @@ public class TheQuadExampleMoving {
 		this.exitOnGLError("loadPNGTexture");
 		
 		return texId;
-	}
-	
-	private float coTangent(float angle) {
-		return (float)(1f / Math.tan(angle));
 	}
 	
 	private float degreesToRadians(float degrees) {
