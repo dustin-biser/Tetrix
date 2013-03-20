@@ -27,7 +27,7 @@ public class SingleTriangleDemo {
 	}
 	
 	// Setup variables
-	private final String WINDOW_TITLE = "Rotating Shapes Demo";
+	private final String WINDOW_TITLE = "Single Triangle Demo";
 	private final int WINDOW_WIDTH = 400;
 	private final int WINDOW_HEIGHT = 400;
 	private final int GL_VIEWPORT_WIDTH = 400;
