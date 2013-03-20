@@ -7,6 +7,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 import tetrix.entities.shapes.Shape;
 
+/**
+ * Class containing static helper methods to aid in rendering {@link Shape} objects.
+ * @author Dustin Biser
+ *
+ */
 public class ShapeUtils {
 	
 	/**
@@ -34,10 +39,10 @@ public class ShapeUtils {
 	 * <code>shape</code>'s Blocks.
 	 * @return Flipped {@link FloatBuffer} containing the vertices of the Shape parameter. 
 	 */
-	public static FloatBuffer getVertexFloatBuffer(Shape shape, float blockHalfWidth){
+	public static FloatBuffer createVertexFloatBuffer(Shape shape, float blockHalfWidth){
 		if (shape == null) return null;
 		
-		Vector3f[] blockVertices = ShapeUtils.getBlockVertices(shape, blockHalfWidth);
+		Vector3f[] blockVertices = ShapeUtils.createBlockVertices(shape, blockHalfWidth);
 		
 		// Create vertex buffer to hold 3 float coordinates per Block vertex.
 		FloatBuffer verticesBuffer =
@@ -65,31 +70,32 @@ public class ShapeUtils {
 	 * 
 	 * @param shape - Shape with Block positions to be converted to array of vertices.
 	 */
-	public static Vector3f[] getBlockVertices(Shape shape, float blockHalfWidth){
+	public static Vector3f[] createBlockVertices(Shape shape, float blockHalfWidth){
 		if (shape == null) return null;
 		
 		int[] blockPositions = shape.getBlockPositions();
 		int blocksPerShape = 4;
 		int verticesPerBlock = 4;
 		Vector3f[] vertices = new Vector3f[ blocksPerShape * verticesPerBlock ];
-		float xPos, yPos;
+		float xCenter, yCenter;
 		
-		// For every col-row Block position pair, create 4 vertices.
+		// For every col-row Block position pair, create 4 vertices for the Block's
+		// corners coordinates.
 		for(int i = 0, j = 0; i < blockPositions.length; i += 2, j += 4){
-			xPos = blockPositions[i];		// column position.
-			yPos = blockPositions[i+1];	// row position.
+			xCenter = blockPositions[i] * blockHalfWidth * 2;
+			yCenter = blockPositions[i+1] * blockHalfWidth * 2;
 			
 			// Bottom left Block vertex
-			vertices[j] = new Vector3f(xPos - blockHalfWidth, yPos - blockHalfWidth, 0);
+			vertices[j] = new Vector3f(xCenter - blockHalfWidth, yCenter - blockHalfWidth, 0);
 			
 			// Bottom right Block vertex
-			vertices[j+1] = new Vector3f(xPos + blockHalfWidth, yPos - blockHalfWidth, 0);
+			vertices[j+1] = new Vector3f(xCenter + blockHalfWidth, yCenter - blockHalfWidth, 0);
 			
 			// Top right Block vertex
-			vertices[j+2] = new Vector3f(xPos + blockHalfWidth, yPos + blockHalfWidth, 0);
+			vertices[j+2] = new Vector3f(xCenter + blockHalfWidth, yCenter + blockHalfWidth, 0);
 			
 			// Top left Block vertex
-			vertices[j+3] = new Vector3f(xPos - blockHalfWidth, yPos + blockHalfWidth, 0);
+			vertices[j+3] = new Vector3f(xCenter - blockHalfWidth, yCenter + blockHalfWidth, 0);
 		}
 		
 		return vertices;
