@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ Block_Test.class, JShape_Test.class })
-public class ShapeTests {
+public class TestSuite {
 
 }
