@@ -75,9 +75,20 @@ public class JShape_Test {
 	/////////////////////////////////////////////////////////////////////////////////////	
 	@Test
 	public void test_getBlockPositions(){
-		int[] positions = shape.getBlockPositions();
+		int[] blockPositions = shape.getBlockPositions();
 		
-		assertArrayEquals(expectedPositions, positions);
+		// Test for correct col-row pairs.
+		assertTrue(blockPositions[0] ==  0);
+		assertTrue(blockPositions[1] ==  0);
+		
+		assertTrue(blockPositions[2] ==  0);
+		assertTrue(blockPositions[3] == -1);
+		
+		assertTrue(blockPositions[4] ==  1);
+		assertTrue(blockPositions[5] == -1);
+		
+		assertTrue(blockPositions[6] ==  2);
+		assertTrue(blockPositions[7] == -1);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////	
