@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 import tetrix.entities.shapes.IShape;
 import tetrix.entities.shapes.Shape;
 
-public class ShapUtils_Test {
+public class ShapeUtils_Test {
 	private Shape shape;
 
 	@Before
