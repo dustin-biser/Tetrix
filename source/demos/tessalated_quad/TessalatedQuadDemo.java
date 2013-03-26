@@ -1,4 +1,4 @@
-package tetrix.demos.tessalated_quad;
+package demos.tessalated_quad;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;

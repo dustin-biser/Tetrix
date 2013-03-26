@@ -1,4 +1,4 @@
-package tetrix.demos.the_quad_example_moving;
+package demos.the_quad_example_moving;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package tetrix.demos.single_triangle;
+package demos.single_triangle;
 
 import java.nio.FloatBuffer;
 
