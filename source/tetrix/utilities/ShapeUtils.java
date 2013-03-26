@@ -86,16 +86,24 @@ public class ShapeUtils {
 			yCenter = blockPositions[i+1] * blockHalfWidth * 2;
 			
 			// Bottom left Block vertex
-			vertices[j] = new Vector3f(xCenter - blockHalfWidth, yCenter - blockHalfWidth, 0);
+			vertices[j] = new Vector3f(xCenter - blockHalfWidth,
+									   yCenter - blockHalfWidth,
+									   0f);
 			
 			// Bottom right Block vertex
-			vertices[j+1] = new Vector3f(xCenter + blockHalfWidth, yCenter - blockHalfWidth, 0);
+			vertices[j+1] = new Vector3f(xCenter + blockHalfWidth,
+										 yCenter - blockHalfWidth,
+										 0f);
 			
 			// Top right Block vertex
-			vertices[j+2] = new Vector3f(xCenter + blockHalfWidth, yCenter + blockHalfWidth, 0);
+			vertices[j+2] = new Vector3f(xCenter + blockHalfWidth,
+									     yCenter + blockHalfWidth,
+									     0f);
 			
 			// Top left Block vertex
-			vertices[j+3] = new Vector3f(xCenter - blockHalfWidth, yCenter + blockHalfWidth, 0);
+			vertices[j+3] = new Vector3f(xCenter - blockHalfWidth,
+										 yCenter + blockHalfWidth,
+										 0f);
 		}
 		
 		return vertices;
