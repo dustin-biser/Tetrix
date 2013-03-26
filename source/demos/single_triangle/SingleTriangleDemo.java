@@ -104,12 +104,12 @@ public class SingleTriangleDemo {
 	private void setupShaders() {		
 		// Load the vertex shader and get the shader ID.
 		vertexShaderId = ShaderUtils.loadShader(
-				"source/tetrix/demos/single_triangle/shaders/vertex.glsl",
+				"source/demos/single_triangle/shaders/vertex.glsl",
 				GL_VERTEX_SHADER);
 		
 		// Load the fragment shader and get the shader ID.
 		fragmentShaderId = ShaderUtils.loadShader(
-				"source/tetrix/demos/single_triangle/shaders/fragment.glsl", 
+				"source/demos/single_triangle/shaders/fragment.glsl", 
 				GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders

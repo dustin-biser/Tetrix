@@ -1,8 +1,6 @@
 package demos.the_quad_example_moving;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -222,11 +220,11 @@ public class TheQuadExampleMoving {
 	
 	private void setupShaders() {		
 		// Load the vertex shader
-		vsId = ShaderUtils.loadShader("source/tetrix/demos/the_quad_example_moving/vertex.glsl", 
+		vsId = ShaderUtils.loadShader("source/demos/the_quad_example_moving/vertex.glsl", 
 				GL20.GL_VERTEX_SHADER);
 		
 		// Load the fragment shader
-		fsId = ShaderUtils.loadShader("source/tetrix/demos/the_quad_example_moving/fragment.glsl", 
+		fsId = ShaderUtils.loadShader("source/demos/the_quad_example_moving/fragment.glsl", 
 				GL20.GL_FRAGMENT_SHADER);
 		
 		// Create a new shader program that links both shaders
