@@ -205,10 +205,9 @@ public class TessalatedQuadDemo {
 		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 		
 		
-		// Deselect (bind to 0) the VBO
+		// Unbind all targets.
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		// Deselect (bind to 0) the VAO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 	
