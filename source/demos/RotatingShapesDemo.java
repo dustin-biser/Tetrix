@@ -16,13 +16,18 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import tetrix.entities.Direction;
 import tetrix.entities.rotations.RotationSystem;
 import tetrix.entities.rotations.SuperRotationSystem;
 import tetrix.entities.shapes.IShape;
+import tetrix.entities.shapes.JShape;
+import tetrix.entities.shapes.LShape;
+import tetrix.entities.shapes.OShape;
+import tetrix.entities.shapes.SShape;
 import tetrix.entities.shapes.Shape;
+import tetrix.entities.shapes.TShape;
+import tetrix.entities.shapes.ZShape;
 import tetrix.utilities.GLUtils;
 import tetrix.utilities.ShaderUtils;
 import tetrix.utilities.ShapeUtils;
@@ -207,6 +212,8 @@ public class RotatingShapesDemo {
 	
 	private void processUserInputs(){
 		while(Keyboard.next()){
+			
+			//-- Shape movement keys.
 			if(Keyboard.getEventKey() == Keyboard.KEY_LEFT){
 				if(Keyboard.getEventKeyState()){
 					currentShape.moveLeft();
@@ -232,17 +239,55 @@ public class RotatingShapesDemo {
 					rotationSystem.rotate(currentShape, Direction.RIGHT);
 				}
 			}
+			
+			//-- Change Shape Type.
+			else if(Keyboard.getEventKey() == Keyboard.KEY_1){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new IShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_2){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new JShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_3){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new LShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_4){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new OShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_5){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new SShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_6){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new TShape();
+				}
+			}
+			else if(Keyboard.getEventKey() == Keyboard.KEY_7){
+				if(Keyboard.getEventKeyState()){
+					currentShape = new ZShape();
+				}
+			}
 		}
 	}
 	
 	private void logicCycle(){
 		// -- Update Vertices
 		// Update Shape vertex locations within the VBO.
-//		glBindBuffer(GL_ARRAY_BUFFER, vboId);
-//		glBufferSubData(GL_ARRAY_BUFFER, 0, verticesBuffer);
-//		
-//		// Unbind the target.
-//		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		verticesBuffer = ShapeUtils.createVertexFloatBuffer(currentShape, blockHalfWidth);
+		glBindBuffer(GL_ARRAY_BUFFER, vboVerticesId);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, verticesBuffer);
+		
+		// Unbind the target.
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		
 		//-- Update OpenGL Matrices
