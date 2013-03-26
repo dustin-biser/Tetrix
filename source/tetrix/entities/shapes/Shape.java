@@ -19,7 +19,10 @@ public abstract class Shape {
 	private Block[] blocks;
 	
 	private RotationState rotationState;
+	
+	// Shapes can be constructed using either Directions or coordinate offsets.
 	private Direction[] constructionDirections;
+	private int[] constructionCoordinates;
 	
 	protected ShapeType shapeType;
 
@@ -63,6 +66,49 @@ public abstract class Shape {
 		rotationState = SPAWN_STATE;
 	}
 	
+	/**
+	 * Constructs a Shape using coordinate offsets from Block-A.  Shape starts with
+	 * Block-A at the origin (col=0, row=0), with Blocks B,C,D placed at col/row
+	 * offsets from Block-A.  Shape's RotationState is set to SPAWNED_STATE by default.
+	 * 
+	 * @param bColOffset
+	 * @param bRowOffSet
+	 * @param cColOffset
+	 * @param cRowOffset
+	 * @param dColOffset
+	 * @param dRowOffset
+	 */
+	Shape(int bColOffset, int bRowOffset,
+		  int cColOffset, int cRowOffset,
+		  int dColOffset, int dRowOffset){
+		
+		constructionCoordinates = new int [6];
+		
+		//-- Save coordinate offsets for later use.
+		constructionCoordinates[0] = bColOffset;
+		constructionCoordinates[1] = bRowOffset;
+		constructionCoordinates[2] = cColOffset;
+		constructionCoordinates[3] = cRowOffset;
+		constructionCoordinates[4] = dColOffset;
+		constructionCoordinates[5] = dRowOffset;
+		
+		blocks = new Block[4];
+		
+		// Block A
+		blocks[0] = new Block(0,0);
+		
+		// Block B
+		blocks[1] = new Block(bColOffset, bRowOffset);
+		
+		// Block C
+		blocks[2] = new Block(cColOffset, cRowOffset);
+		
+		// Block D
+		blocks[3] = new Block(dColOffset, dRowOffset);
+		
+		rotationState = SPAWN_STATE;
+	}
+	
 	private int directionToColOffset(Direction direction){
 		switch (direction){
 		case LEFT:
@@ -95,19 +141,44 @@ public abstract class Shape {
 		int rowOffset = 0;
 		int colOffset = 0;
 		
+		// Reset Block-A's position.
 		blocks[0].setColumn(0);
 		blocks[0].setRow(0);
 		
-		Direction direction;
-		
-		// Chain the placement of blocks B, C, and D.
-		for(int i = 1; i < blocks.length; i++){
-			direction = constructionDirections[i-1];
-			colOffset += directionToColOffset(direction);
-			rowOffset += directionToRowOffset(direction);
+		// Use construction directions if available.
+		if (constructionDirections != null) {
+			Direction direction;
 			
-			blocks[i].setColumn(colOffset);
-			blocks[i].setRow(rowOffset);
+			// Chain the placement of blocks B, C, and D.
+			for(int i = 1; i < blocks.length; i++){
+				direction = constructionDirections[i-1];
+				colOffset += directionToColOffset(direction);
+				rowOffset += directionToRowOffset(direction);
+				
+				blocks[i].setColumn(colOffset);
+				blocks[i].setRow(rowOffset);
+			}
+		}
+		else { // Use construction coordinates.
+			int column, row;
+			
+			// Reset Block-B's position.
+			column = constructionCoordinates[0];
+			row = constructionCoordinates[1];
+			blocks[1].setColumn(column);
+			blocks[1].setRow(row);
+			
+			// Reset Block-C's position.
+			column = constructionCoordinates[2];
+			row = constructionCoordinates[3];
+			blocks[2].setColumn(column);
+			blocks[2].setRow(row);
+			
+			// Reset Block-D's position.
+			column = constructionCoordinates[4];
+			row = constructionCoordinates[5];
+			blocks[3].setColumn(column);
+			blocks[3].setRow(row);
 		}
 		
 		rotationState = SPAWN_STATE;
