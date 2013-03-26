@@ -71,12 +71,19 @@ public abstract class Shape {
 	 * Block-A at the origin (col=0, row=0), with Blocks B,C,D placed at col/row
 	 * offsets from Block-A.  Shape's RotationState is set to SPAWNED_STATE by default.
 	 * 
-	 * @param bColOffset
-	 * @param bRowOffSet
-	 * @param cColOffset
-	 * @param cRowOffset
-	 * @param dColOffset
-	 * @param dRowOffset
+	 * <p>
+	 * Column and Row offsets use the following convention.  Given an integer k > 0,
+	 * <li>ColOffset = k, is an offset to the right by k columns.</li>
+	 * <li>ColOffset = -k, is an offset to the left by k columns.</li>
+	 * <li>RowOffset = k, is an offset upwards by k rows.</li>
+	 * <li>RowOffset = -k, is an offset downwards by k rows.</li>
+	 * 
+	 * @param bColOffset - column offset from Block-A to place Block-B.
+	 * @param bRowOffSet - row offset from Block-A to place Block-B. 
+	 * @param cColOffset - column offset from Block-A to place Block-C.
+	 * @param cRowOffSet - row offset from Block-A to place Block-C. 
+	 * @param dColOffset - column offset from Block-A to place Block-D.
+	 * @param dRowOffSet - row offset from Block-A to place Block-D. 
 	 */
 	Shape(int bColOffset, int bRowOffset,
 		  int cColOffset, int cRowOffset,
