@@ -16,7 +16,7 @@ public class ShapeUtils {
 	
 	/**
 	 * Returns a flipped {@link FloatBuffer} containing vertex coordinate data that
-	 * can be used to render the given {@link Shape} parameter.
+	 * can be used to render the argument {@link Shape} parameter.
 	 * 
 	 * <p>
 	 * Every 3 floats,
