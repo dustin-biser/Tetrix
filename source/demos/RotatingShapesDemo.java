@@ -1,5 +1,6 @@
 package demos;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -24,6 +25,7 @@ import tetrix.entities.shapes.IShape;
 import tetrix.entities.shapes.Shape;
 import tetrix.utilities.GLUtils;
 import tetrix.utilities.ShaderUtils;
+import tetrix.utilities.ShapeUtils;
 
 
 public class RotatingShapesDemo {
@@ -39,10 +41,6 @@ public class RotatingShapesDemo {
 	private final int GL_VIEWPORT_WIDTH = 400;
 	private final int GL_VIEWPORT_HEIGHT = 400;
 	
-	// Shape related variables.
-	private float blockHalfWidth = 0.05f;  		// 1/2 Block dimension size.
-	private FloatBuffer verticesBuffer = null;  // To hold Shape vertices.
-	
 	// OpenGL shader related variables
 	private int vaoId = 0;
 	private int vboVerticesId = 0;
@@ -54,7 +52,7 @@ public class RotatingShapesDemo {
 	private int projectionMatrixLocation;
 	private int viewMatrixLocation;
 	private int modelMatrixLocation;
-	private FloatBuffer indicesBuffer;
+	private byte[] indices;
 	
 	// OpenGL Matrix related variables
 	private Matrix4f projectionMatrix = null;
@@ -62,9 +60,12 @@ public class RotatingShapesDemo {
 	private Matrix4f modelMatrix = null;
 	private FloatBuffer matrix44Buffer = null;
 	
-	// Tetrix related variables
+	// Tetrix related variables.
 	private Shape currentShape = null;
 	private RotationSystem rotationSystem = null; 
+	private float blockHalfWidth = 1f;  		// 1/2 Block dimension size.
+	private FloatBuffer verticesBuffer = null;  // To hold Shape vertices.
+	
 	
 	public RotatingShapesDemo() {
 		// Initialize OpenGL (Display)
@@ -109,7 +110,7 @@ public class RotatingShapesDemo {
 		}
 		
 		// Draw only the outline of polygons.
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
 		// Setup an XNA like background color
 		glClearColor(0.4f, 0.6f, 0.9f, 0f);
@@ -149,7 +150,7 @@ public class RotatingShapesDemo {
 	}
 	
 	private void setupMatrices(){
-		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-5, 5, -5, 5, -1, 1);
+		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-10, 10, -10, 10, -1, 1);
 		viewMatrix = new Matrix4f();
 		modelMatrix = new Matrix4f();
 		
@@ -158,47 +159,49 @@ public class RotatingShapesDemo {
 	}
 	
 	private void setupShapes() {
-		float[] vertices = { -0.75f, -0.75f,  0.0f,
-							  0.75f, -0.75f,  0.0f,
-							  0.75f, 0.75f, 0.0f };
+		currentShape = new IShape();
+		rotationSystem = new SuperRotationSystem();
 		
-		verticesBuffer = BufferUtils.createFloatBuffer(9);
-		verticesBuffer.put(vertices);
-		verticesBuffer.flip();
+		verticesBuffer = ShapeUtils.
+				createVertexFloatBuffer(currentShape, this.blockHalfWidth);
 		
-		float[] colors = { 1.0f, 0.0f, 0.0f,
-						   0.0f, 1.0f, 0.0f,
-						   0.0f, 0.0f, 1.0f };
+		indices = new byte[]{ 0,1,2,    2,3,0,    	// Triangle indices Block A.
+						      4,5,6,    6,7,4,		// Triangle indices Block B.
+						      8,9,10,   10,11,8,	// Triangle indices Block C.
+						      12,13,14, 14,15,12	// Triangle indices Block D.
+							};
+	
 		
-		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(9);
-		colorBuffer.put(colors);
-		colorBuffer.flip();
+		// Create ByteBuffer to hold index data.
+		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indices.length);
+		indicesBuffer.put(indices);
+		indicesBuffer.flip();
+		
 		
 		// Create a new Vertex Array Object in memory and select it (bind)
 		vaoId = glGenVertexArrays();
 		glBindVertexArray(vaoId);
 		
+		
+		//--Upload vertex data to GPU
 		// Create a new Vertex Buffer Object to reference position data.
 		vboVerticesId = glGenBuffers();
-		
 		// Upload vertex position data to attribute location 0.
 		glBindBuffer(GL_ARRAY_BUFFER, vboVerticesId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 		
-		// Create a new Vertex Buffer Object to reference color data.
-		vboColorsId = glGenBuffers();
 		
-		// Upload color data to attribute location 1.
-		glBindBuffer(GL_ARRAY_BUFFER, vboColorsId);
-		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
-		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
+		//--Upload index data to GPU
+		// Create a new VBO to reference index data.
+		vboIndicesId = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 		
 		
-		// Deselect (bind to 0) the VBO
+		// Reset everything to default by unbinding targets.
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		// Deselect (bind to 0) the VAO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 	
@@ -268,9 +271,9 @@ public class RotatingShapesDemo {
 		// Bind to the VAO that has all the information about the vertices
 		glBindVertexArray(vaoId);
 		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
 		
-		glDrawArrays(GL_TRIANGLES, 0, 3); 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
+		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_BYTE, 0);
 		
 		// Put everything back to default (deselect)
 		glDisableVertexAttribArray(0);
