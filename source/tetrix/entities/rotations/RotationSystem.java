@@ -25,7 +25,7 @@ public abstract class RotationSystem {
 	 * to this method must be one of <code>LEFT</code> or <code>RIGHT</code>,
 	 * otherwise an {@link InvalidParameterException} is thrown.
 	 * @param shape - the Shape to be rotated.
-	 * @param direction - the Direction of the rotation, must be LEFT or RIGHT.
+	 * @param direction - the Direction of the rotation, either LEFT or RIGHT.
 	 */
 	public abstract void rotate(Shape shape, Direction direction) throws InvalidParameterException;
 	
