@@ -41,10 +41,10 @@ public class RotatingShapesDemo {
 	
 	// Setup variables
 	private final String WINDOW_TITLE = "Rotating Shapes Demo";
-	private final int WINDOW_WIDTH = 400;
-	private final int WINDOW_HEIGHT = 400;
-	private final int GL_VIEWPORT_WIDTH = 400;
-	private final int GL_VIEWPORT_HEIGHT = 400;
+	private final int WINDOW_WIDTH = 600;
+	private final int WINDOW_HEIGHT = 800;
+	private final int GL_VIEWPORT_WIDTH = 600;
+	private final int GL_VIEWPORT_HEIGHT = 800;
 	
 	// OpenGL shader related variables
 	private int vaoId = 0;
@@ -155,11 +155,18 @@ public class RotatingShapesDemo {
 	}
 	
 	private void setupMatrices(){
-		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-10, 10, -10, 10, -1, 1);
+		float aspectRatio = GL_VIEWPORT_WIDTH / (float) GL_VIEWPORT_HEIGHT;
+		float scale = 0.05f;
+		
+		float xSpan = 1 / scale;
+		float ySpan = xSpan / aspectRatio;
+		
+		// Setup Projection Matrix so that xSpan / ySpan = aspectRatio.
+		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-1*xSpan, xSpan, -1*ySpan, ySpan, -1, 1);
 		viewMatrix = new Matrix4f();
 		modelMatrix = new Matrix4f();
 		
-		// Create a FloatBuffer with the proper size to store matrices in GPU memory.f
+		// Create a FloatBuffer with the proper size to store matrices in GPU memory.
 		matrix44Buffer = BufferUtils.createFloatBuffer(16);
 	}
 	

@@ -5,7 +5,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ Block_Test.class, JShape_Test.class })
+@SuiteClasses({ Block_Test.class,
+			    JShape_Test.class,
+			    IShape_Test.class,
+			    TShape_Test.class})
 public class TestSuite {
 
 }
