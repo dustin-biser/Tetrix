@@ -156,8 +156,52 @@ public class SuperRotationSystem extends RotationSystem {
 		this.shapeRotationResponses.put(ShapeType.J, responseMap);
 	}
 	
+	/*
+	 * Shape L
+	 * RotationStates: 
+	 *    O         R         2         L
+	 * |-|-|D|   |-|A|-|   |-|-|-|   |D|C|-|  
+	 * |A|B|C|   |-|B|-|   |C|B|A|   |-|B|-|  
+	 * |-|-|-|   |-|C|D|   |D|-|-|   |-|A|-|  
+	 * 
+	 * +col (right), +row (up) 
+	 */
 	private void computeLShapeReponses() {
-		// TODO Auto-generated method stub
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
+		
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO translation responses.
+		translationResponse = new TranslationResponse().translateA( 1,  1)
+													   .translateC(-1, -1)
+													   .translateD( 0, -2);
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR translation responses.
+		translationResponse = new TranslationResponse().translateA( 1, -1)
+													   .translateC(-1,  1)
+													   .translateD(-2,  0);
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo translation responses.
+		translationResponse = new TranslationResponse().translateA(-1, -1)
+													   .translateC( 1,  1)
+													   .translateD( 0,  2);
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL translation responses.
+		translationResponse = new TranslationResponse().translateA(-1,  1)
+													   .translateC( 1, -1)
+													   .translateD( 2,  0);
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.L, responseMap);
 		
 	}
 	
