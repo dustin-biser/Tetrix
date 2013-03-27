@@ -108,34 +108,80 @@ public class SuperRotationSystem extends RotationSystem {
 		this.shapeRotationResponses.put(ShapeType.I, responseMap);
 	}
 
+	/*
+	 * Shape J
+	 * RotationStates: 
+	 *    O         R         2         L
+	 * |A|-|-|   |-|B|A|   |-|-|-|   |-|D|-|  
+	 * |B|C|D|   |-|C|-|   |D|C|B|   |-|C|-|  
+	 * |-|-|-|   |-|D|-|   |-|-|A|   |A|B|-|  
+	 * 
+	 * +col (right), +row (up) 
+	 */
+	private void computeJShapeReponses() {
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
+		
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO translation responses.
+		translationResponse = new TranslationResponse().translateA(  2,  0)
+													   .translateB(  1,  1)
+													   .translateD( -1, -1);
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR translation responses.
+		translationResponse = new TranslationResponse().translateA( 0, -2)
+													   .translateB( 1, -1)
+													   .translateD(-1,  1);
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo translation responses.
+		translationResponse = new TranslationResponse().translateA(-2,  0)
+													   .translateB(-1, -1)
+													   .translateD( 1,  1);
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL translation responses.
+		translationResponse = new TranslationResponse().translateA( 0,  2)
+													   .translateB(-1,  1)
+													   .translateD( 1, -1);
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.J, responseMap);
+	}
 	
-	private void computeZShapeReponses() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void computeTShapeReponses() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void computeSShapeReponses() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void computeOShapeReponses() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void computeLShapeReponses() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	private void computeJShapeReponses() {
+	
+	private void computeOShapeReponses() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private void computeSShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void computeTShapeReponses() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void computeZShapeReponses() {
+		// TODO Auto-generated method stub
+	}
+
+
+
+
+
 }
