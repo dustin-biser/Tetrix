@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 
 import tetrix.entities.Direction;
 import tetrix.entities.rotations.RotationSystem;
@@ -70,7 +71,8 @@ public class RotatingShapesDemo {
 	private RotationSystem rotationSystem = null; 
 	private float blockHalfWidth = 1f;
 	private FloatBuffer verticesBuffer = null;
-	private FloatBuffer colorBuffer = null;
+	
+	boolean escKeyPressed = false;
 	
 	
 	public RotatingShapesDemo() {
@@ -80,7 +82,7 @@ public class RotatingShapesDemo {
 		this.setupShapes();
 		this.setupMatrices();
 		
-		while (!Display.isCloseRequested()) {
+		while (!Display.isCloseRequested() && !escKeyPressed) {
 			this.processUserInputs();
 			this.logicCycle();
 			this.renderCycle();
@@ -167,6 +169,10 @@ public class RotatingShapesDemo {
 		viewMatrix = new Matrix4f();
 		modelMatrix = new Matrix4f();
 		
+		// Translate modelMatrix by half a pixel so that lines land on pixel centers.
+		// This will allow corner pixels to be rendered for each Shape.
+		Matrix4f.translate(new Vector2f(0.5f,0.5f), modelMatrix, modelMatrix);
+		
 		// Create a FloatBuffer with the proper size to store matrices in GPU memory.
 		matrix44Buffer = BufferUtils.createFloatBuffer(16);
 	}
@@ -238,6 +244,11 @@ public class RotatingShapesDemo {
 	
 	private void processUserInputs(){
 		while(Keyboard.next()){
+			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE){
+				if(Keyboard.getEventKeyState()){
+					escKeyPressed = true;
+				}
+			}
 			
 			//-- Shape movement keys.
 			if(Keyboard.getEventKey() == Keyboard.KEY_LEFT){
