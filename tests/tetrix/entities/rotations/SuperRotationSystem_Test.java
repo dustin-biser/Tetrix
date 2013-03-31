@@ -10,17 +10,20 @@ import org.junit.Test;
 import tetrix.entities.Direction;
 import tetrix.entities.shapes.IShape;
 import tetrix.entities.shapes.OShape;
+import tetrix.entities.shapes.SShape;
 import tetrix.entities.shapes.Shape;
 
 public class SuperRotationSystem_Test {
 	private Shape shapeI;
 	private Shape shapeO;
+	private Shape shapeS;
 	private RotationSystem rotationSystem = new SuperRotationSystem();
 	
 	@Before
 	public void setUp() throws Exception {
 		shapeI = new IShape();
 		shapeO = new OShape();
+		shapeS = new SShape();
 	}
 
 	@Test(expected=InvalidParameterException.class)
@@ -34,7 +37,7 @@ public class SuperRotationSystem_Test {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////
-	// Test RotationState
+	// Test IShape RotationState
 	/////////////////////////////////////////////////////////////////////////////////////
 	
 	@Test
@@ -278,4 +281,74 @@ public class SuperRotationSystem_Test {
 		assertArrayEquals(expectedBlockPositions, shapeO.getBlockPositions());
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Test SShape Rotation
+	/////////////////////////////////////////////////////////////////////////////////////
+	@Test
+	public void test_SShape_RotationState_rotate_RIGHT(){
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		
+		assertEquals(RotationState.RIGHT_OF_SPAWN, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_RIGHT_RIGHT(){
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		
+		assertEquals(RotationState.SECOND_ROTATION, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_RIGHT_RIGHT_RIGHT(){
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		
+		assertEquals(RotationState.LEFT_OF_SPAWN, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_RIGHT_fullCircle(){
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		rotationSystem.rotate(shapeS, Direction.RIGHT);
+		
+		assertEquals(RotationState.SPAWN_STATE, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_LEFT(){
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		
+		assertEquals(RotationState.LEFT_OF_SPAWN, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_LEFT_LEFT(){
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		
+		assertEquals(RotationState.SECOND_ROTATION, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_LEFT_LEFT_LEFT(){
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		
+		assertEquals(RotationState.RIGHT_OF_SPAWN, shapeS.getRotationState());
+	}
+	
+	@Test
+	public void test_SShape_RotationState_rotate_LEFT_fullCircle(){
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		rotationSystem.rotate(shapeS, Direction.LEFT);
+		
+		assertEquals(RotationState.SPAWN_STATE, shapeS.getRotationState());
+	}
 }

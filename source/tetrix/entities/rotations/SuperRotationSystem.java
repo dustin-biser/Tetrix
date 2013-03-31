@@ -211,17 +211,85 @@ public class SuperRotationSystem extends RotationSystem {
 	}
 	
 	private void computeOShapeReponses() {
-		// No translations.
+		// No translation responses for ShapeType O.
 	}
 	
+	/*
+	 * Shape S
+	 * RotationStates: 
+	 *    O         R         2         L
+	 * |-|C|D|   |-|A|-|   |-|-|-|   |D|-|-|  
+	 * |A|B|-|   |-|B|C|   |-|B|A|   |C|B|-|  
+	 * |-|-|-|   |-|-|D|   |D|C|-|   |-|A|-|  
+	 * 
+	 * +col (right), +row (up) 
+	 */
 	private void computeSShapeReponses() {
-		// TODO Auto-generated method stub
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
 		
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO translation responses.
+		translationResponse = new TranslationResponse().translateA(1,  1)
+													   .translateC(1, -1)
+													   .translateD(0, -2);
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR translation responses.
+		translationResponse = new TranslationResponse().translateA( 1, -1)
+													   .translateC(-1, -1)
+													   .translateD(-2,  0);
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo translation responses.
+		translationResponse = new TranslationResponse().translateA(-1, -1)
+													   .translateC(-1,  1)
+													   .translateD( 0,  2);
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL translation responses.
+		translationResponse = new TranslationResponse().translateA(-1, 1)
+													   .translateC( 1, 1)
+													   .translateD( 2, 0);
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.S, responseMap);
 	}
 	
 	private void computeTShapeReponses() {
-		// TODO Auto-generated method stub
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
 		
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO translation responses.
+		translationResponse = new TranslationResponse().translateA()
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR translation responses.
+		translationResponse = new TranslationResponse().translateA()
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo translation responses.
+		translationResponse = new TranslationResponse().translateA()
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL translation responses.
+		translationResponse = new TranslationResponse().translateA()
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.T, responseMap);
 	}
 	
 	private void computeZShapeReponses() {
