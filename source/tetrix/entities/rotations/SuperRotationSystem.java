@@ -262,6 +262,17 @@ public class SuperRotationSystem extends RotationSystem {
 		this.shapeRotationResponses.put(ShapeType.S, responseMap);
 	}
 	
+	
+	/*
+	 * Shape T
+	 * RotationStates: 
+	 *    O         R         2         L
+	 * |-|B|-|   |-|C|-|   |-|-|-|   |-|D|-|  
+	 * |C|A|D|   |-|A|B|   |D|A|C|   |B|A|-|  
+	 * |-|-|-|   |-|D|-|   |-|B|-|   |-|C|-|  
+	 * 
+	 * +col (right), +row (up) 
+	 */
 	private void computeTShapeReponses() {
 		Map<RotationTransition, TranslationResponse> responseMap =
 				new HashMap<RotationTransition, TranslationResponse>();
@@ -269,23 +280,31 @@ public class SuperRotationSystem extends RotationSystem {
 		TranslationResponse translationResponse;
 		
 		// OtoR and RtoO translation responses.
-		translationResponse = new TranslationResponse().translateA()
+		translationResponse = new TranslationResponse().translateB( 1, -1)
+													   .translateC( 1,  1)
+													   .translateD(-1, -1);
 		responseMap.put(RotationTransition.OtoR, translationResponse);
 		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
 		
 		
 		// RtoTwo and TwotoR translation responses.
-		translationResponse = new TranslationResponse().translateA()
+		translationResponse = new TranslationResponse().translateB(-1, -1)
+													   .translateC( 1, -1)
+													   .translateD(-1,  1);
 		responseMap.put(RotationTransition.RtoTwo, translationResponse);
 		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
 		
 		// TwotoL and LtoTwo translation responses.
-		translationResponse = new TranslationResponse().translateA()
+		translationResponse = new TranslationResponse().translateB(-1,  1)
+													   .translateC(-1, -1)
+													   .translateD( 1,  1);
 		responseMap.put(RotationTransition.TwotoL, translationResponse);
 		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
 		
 		// LtoO and OtoL translation responses.
-		translationResponse = new TranslationResponse().translateA()
+		translationResponse = new TranslationResponse().translateB( 1, 1)
+													   .translateC(-1, 1)
+													   .translateD( 1, -1);
 		responseMap.put(RotationTransition.LtoO, translationResponse);
 		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
 		
