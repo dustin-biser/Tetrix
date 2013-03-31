@@ -44,6 +44,11 @@ public class SuperRotationSystem extends RotationSystem {
 
 		Map<RotationTransition, TranslationResponse> responseMap =
 				shapeRotationResponses.get(shapeType);
+		
+		if (responseMap == null){
+			// No translations for the given ShapeType.
+			return;
+		}
 
 		RotationTransition transition =
 				RotationTransition.getTransition(startState, endState);
@@ -206,8 +211,7 @@ public class SuperRotationSystem extends RotationSystem {
 	}
 	
 	private void computeOShapeReponses() {
-		// TODO Auto-generated method stub
-		
+		// No translations.
 	}
 	
 	private void computeSShapeReponses() {

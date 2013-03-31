@@ -9,15 +9,18 @@ import org.junit.Test;
 
 import tetrix.entities.Direction;
 import tetrix.entities.shapes.IShape;
+import tetrix.entities.shapes.OShape;
 import tetrix.entities.shapes.Shape;
 
 public class SuperRotationSystem_Test {
 	private Shape shapeI;
+	private Shape shapeO;
 	private RotationSystem rotationSystem = new SuperRotationSystem();
 	
 	@Before
 	public void setUp() throws Exception {
 		shapeI = new IShape();
+		shapeO = new OShape();
 	}
 
 	@Test(expected=InvalidParameterException.class)
@@ -31,7 +34,7 @@ public class SuperRotationSystem_Test {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////
-	// Test Modified RotationState
+	// Test RotationState
 	/////////////////////////////////////////////////////////////////////////////////////
 	
 	@Test
@@ -250,4 +253,29 @@ public class SuperRotationSystem_Test {
 		
 		assertArrayEquals(shapeI_atR.getBlockPositions(), shapeI.getBlockPositions());
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Test OShape Rotation
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	@Test
+	public void test_OShape_BlockPositions_rotate_LEFT(){
+		int[] expectedBlockPositions = shapeO.getBlockPositions();
+		
+		rotationSystem.rotate(shapeO, Direction.LEFT);
+		
+		// Block positions should not have changed.
+		assertArrayEquals(expectedBlockPositions, shapeO.getBlockPositions());
+	}
+	
+	@Test
+	public void test_OShape_BlockPositions_rotate_RIGHT(){
+		int[] expectedBlockPositions = shapeO.getBlockPositions();
+		
+		rotationSystem.rotate(shapeO, Direction.RIGHT);
+		
+		// Block positions should not have changed.
+		assertArrayEquals(expectedBlockPositions, shapeO.getBlockPositions());
+	}
+	
 }
