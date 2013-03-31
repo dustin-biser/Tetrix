@@ -311,8 +311,52 @@ public class SuperRotationSystem extends RotationSystem {
 		this.shapeRotationResponses.put(ShapeType.T, responseMap);
 	}
 	
+	/*
+	 * Shape Z
+	 * RotationStates: 
+	 *    O         R         2         L
+	 * |A|B|-|   |-|-|A|   |-|-|-|   |-|D|-|  
+	 * |-|C|D|   |-|C|B|   |D|C|-|   |B|C|-|  
+	 * |-|-|-|   |-|D|-|   |-|B|A|   |A|-|-|  
+	 * 
+	 * +col (right), +row (up) 
+	 */
 	private void computeZShapeReponses() {
-		// TODO Auto-generated method stub
+		Map<RotationTransition, TranslationResponse> responseMap =
+				new HashMap<RotationTransition, TranslationResponse>();
+		
+		TranslationResponse translationResponse;
+		
+		// OtoR and RtoO translation responses.
+		translationResponse = new TranslationResponse().translateA( 2,  0)
+													   .translateB( 1, -1)
+													   .translateD(-1, -1);
+		responseMap.put(RotationTransition.OtoR, translationResponse);
+		responseMap.put(RotationTransition.RtoO, translationResponse.getInverse());
+		
+		
+		// RtoTwo and TwotoR translation responses.
+		translationResponse = new TranslationResponse().translateA( 0, -2)
+													   .translateB(-1, -1)
+													   .translateD(-1,  1);
+		responseMap.put(RotationTransition.RtoTwo, translationResponse);
+		responseMap.put(RotationTransition.TwotoR, translationResponse.getInverse());
+		
+		// TwotoL and LtoTwo translation responses.
+		translationResponse = new TranslationResponse().translateA(-2, 0)
+													   .translateB(-1, 1)
+													   .translateD( 1, 1);
+		responseMap.put(RotationTransition.TwotoL, translationResponse);
+		responseMap.put(RotationTransition.LtoTwo, translationResponse.getInverse());
+		
+		// LtoO and OtoL translation responses.
+		translationResponse = new TranslationResponse().translateA(0,  2)
+													   .translateB(1,  1)
+													   .translateD(1, -1);
+		responseMap.put(RotationTransition.LtoO, translationResponse);
+		responseMap.put(RotationTransition.OtoL, translationResponse.getInverse());
+		
+		this.shapeRotationResponses.put(ShapeType.Z, responseMap);
 	}
 
 

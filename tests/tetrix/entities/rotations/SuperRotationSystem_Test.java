@@ -13,12 +13,14 @@ import tetrix.entities.shapes.OShape;
 import tetrix.entities.shapes.SShape;
 import tetrix.entities.shapes.Shape;
 import tetrix.entities.shapes.TShape;
+import tetrix.entities.shapes.ZShape;
 
 public class SuperRotationSystem_Test {
 	private Shape shapeI;
 	private Shape shapeO;
 	private Shape shapeS;
 	private Shape shapeT;
+	private Shape shapeZ;
 	private RotationSystem rotationSystem = new SuperRotationSystem();
 	
 	@Before
@@ -27,6 +29,7 @@ public class SuperRotationSystem_Test {
 		shapeO = new OShape();
 		shapeS = new SShape();
 		shapeT = new TShape();
+		shapeZ = new ZShape();
 	}
 
 	@Test(expected=InvalidParameterException.class)
@@ -424,5 +427,76 @@ public class SuperRotationSystem_Test {
 		rotationSystem.rotate(shapeT, Direction.LEFT);
 		
 		assertEquals(RotationState.SPAWN_STATE, shapeT.getRotationState());
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Test ZShape Rotation
+	/////////////////////////////////////////////////////////////////////////////////////
+	@Test
+	public void test_ZShape_RotationState_rotate_RIGHT(){
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		
+		assertEquals(RotationState.RIGHT_OF_SPAWN, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_RIGHT_RIGHT(){
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		
+		assertEquals(RotationState.SECOND_ROTATION, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_RIGHT_RIGHT_RIGHT(){
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		
+		assertEquals(RotationState.LEFT_OF_SPAWN, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_RIGHT_fullCircle(){
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		rotationSystem.rotate(shapeZ, Direction.RIGHT);
+		
+		assertEquals(RotationState.SPAWN_STATE, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_LEFT(){
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		
+		assertEquals(RotationState.LEFT_OF_SPAWN, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_LEFT_LEFT(){
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		
+		assertEquals(RotationState.SECOND_ROTATION, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_LEFT_LEFT_LEFT(){
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		
+		assertEquals(RotationState.RIGHT_OF_SPAWN, shapeZ.getRotationState());
+	}
+	
+	@Test
+	public void test_ZShape_RotationState_rotate_LEFT_fullCircle(){
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		rotationSystem.rotate(shapeZ, Direction.LEFT);
+		
+		assertEquals(RotationState.SPAWN_STATE, shapeZ.getRotationState());
 	}
 }
