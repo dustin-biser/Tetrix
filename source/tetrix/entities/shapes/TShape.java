@@ -9,7 +9,6 @@ import tetrix.entities.shapes.ShapeType;
  */
 
 /* Block Placement for Spawn State
- * |-|-|-|
  * |-|B|-|
  * |C|A|D|
  * |-|-|-|
