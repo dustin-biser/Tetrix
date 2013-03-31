@@ -47,10 +47,10 @@ public class RotatingShapesDemo {
 	private final int GL_VIEWPORT_HEIGHT = 800;
 	
 	// OpenGL shader related variables
-	private int vaoId = 0;
-	private int vboVerticesId = 0;
-	private int vboIndicesId = 0;
-	private int vboColorsId = 0;
+	private int vaoId;
+	private int vboVerticesId;
+	private int vboIndicesId;
+	private int vboColorsId;
 	private int vertexShaderId;
 	private int fragmentShaderId;
 	private int programId;
@@ -68,8 +68,9 @@ public class RotatingShapesDemo {
 	// Tetrix related variables.
 	private Shape currentShape = null;
 	private RotationSystem rotationSystem = null; 
-	private float blockHalfWidth = 1f;  		// 1/2 Block dimension size.
-	private FloatBuffer verticesBuffer = null;  // To hold Shape vertices.
+	private float blockHalfWidth = 1f;
+	private FloatBuffer verticesBuffer = null;
+	private FloatBuffer colorBuffer = null;
 	
 	
 	public RotatingShapesDemo() {
@@ -105,8 +106,8 @@ public class RotatingShapesDemo {
 			
 			Display.setDisplayMode(new DisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT));
 			Display.setTitle(WINDOW_TITLE);
-			Display.create(pixelFormat, contextAtrributes);
 			Display.setResizable(true);
+			Display.create(pixelFormat, contextAtrributes);
 			
 			glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		} catch (LWJGLException e) {
@@ -174,20 +175,31 @@ public class RotatingShapesDemo {
 		currentShape = new IShape();
 		rotationSystem = new SuperRotationSystem();
 		
+		// Create FloatBuffer to hold vertex data.
 		verticesBuffer = ShapeUtils.
 				createVertexFloatBuffer(currentShape, this.blockHalfWidth);
 		
+		// Create index data and store in a direct ByteBuffer
 		indices = new byte[]{ 0,1,2,    2,3,0,    	// Triangle indices Block A.
 						      4,5,6,    6,7,4,		// Triangle indices Block B.
 						      8,9,10,   10,11,8,	// Triangle indices Block C.
 						      12,13,14, 14,15,12	// Triangle indices Block D.
 							};
-	
-		
-		// Create ByteBuffer to hold index data.
 		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indices.length);
 		indicesBuffer.put(indices);
 		indicesBuffer.flip();
+		
+		// Create color data for each vertex.  For each vertex there will be
+		// associated three float components corresponding to Red, Green, and Blue
+		// intensities.
+		float[] colors = new float[verticesBuffer.capacity()];
+		for(int i = 0; i < colors.length; i++){
+			// Set to black.
+			colors[i] = 0.0f;
+		}
+		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(colors.length);
+		colorBuffer.put(colors);
+		colorBuffer.flip();
 		
 		
 		// Create a new Vertex Array Object in memory and select it (bind)
@@ -209,6 +221,13 @@ public class RotatingShapesDemo {
 		vboIndicesId = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+		
+		
+		//--Upload color data to GPU
+		vboColorsId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorsId);
+		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
+		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 		
 		
 		// Reset everything to default by unbinding targets.
@@ -323,6 +342,7 @@ public class RotatingShapesDemo {
 		// Bind to the VAO that has all the information about the vertices
 		glBindVertexArray(vaoId);
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
 		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_BYTE, 0);
@@ -339,13 +359,19 @@ public class RotatingShapesDemo {
 		// Disable the VBO index from the VAO attributes list
 		glDisableVertexAttribArray(0);
 		
-		// Delete the vertex VBO
+		// Delete all VBOs
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDeleteBuffers(vboVerticesId);
+		glDeleteBuffers(vboIndicesId);
+		glDeleteBuffers(vboColorsId);
 		
 		// Delete the VAO
 		glBindVertexArray(0);
 		glDeleteVertexArrays(vaoId);
+		
+		// Delete Shaders
+		glDeleteShader(vertexShaderId);
+		glDeleteShader(fragmentShaderId);
 		
 		// Delete the shader program
 		glDeleteProgram(programId);
