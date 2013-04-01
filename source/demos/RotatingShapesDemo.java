@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import tetrix.entities.Direction;
 import tetrix.entities.rotations.RotationSystem;
@@ -48,10 +49,13 @@ public class RotatingShapesDemo {
 	private final int GL_VIEWPORT_HEIGHT = 800;
 	
 	// OpenGL shader related variables
-	private int vaoId;
-	private int vboVerticesId;
-	private int vboIndicesId;
-	private int vboColorsId;
+	private int vaoShapeId;
+	private int vboShapeVerticesId;
+	private int vboShapeIndicesId;
+	private int vboShapeColorsId;
+	private int vaoGridId;
+	private int vboGridVerticesId;
+	private int vboGridColorsId;
 	private int vertexShaderId;
 	private int fragmentShaderId;
 	private int programId;
@@ -59,6 +63,10 @@ public class RotatingShapesDemo {
 	private int viewMatrixLocation;
 	private int modelMatrixLocation;
 	private byte[] indices;
+	private Vector3f[] gridVertices;
+	private final int POSITION_ATTRIBUTE_LOCATION = 0;
+	private final int COLOR_ATTRIBUTE_LOCATION= 1;
+	
 	
 	// OpenGL Matrix related variables
 	private Matrix4f projectionMatrix = null;
@@ -80,6 +88,7 @@ public class RotatingShapesDemo {
 		this.setupOpenGL();
 		this.setupShaders();
 		this.setupShapes();
+		this.setupGrid();
 		this.setupMatrices();
 	
 		// Allow User to hold down movement keys for rapid firing.
@@ -146,9 +155,9 @@ public class RotatingShapesDemo {
 		glLinkProgram(programId);
 
 		// Set position attribute location to location 0
-		glBindAttribLocation(programId, 0, "in_Position");
+		glBindAttribLocation(programId, POSITION_ATTRIBUTE_LOCATION, "in_Position");
 		// Set color attribute location to location 1
-		glBindAttribLocation(programId, 1, "in_Color");
+		glBindAttribLocation(programId, COLOR_ATTRIBUTE_LOCATION, "in_Color");
 		
 		// Get location of each matrix uniform
 		projectionMatrixLocation = glGetUniformLocation(programId, "projectionMatrix");
@@ -215,29 +224,29 @@ public class RotatingShapesDemo {
 		
 		
 		// Create a new Vertex Array Object in memory and select it (bind)
-		vaoId = glGenVertexArrays();
-		glBindVertexArray(vaoId);
+		vaoShapeId = glGenVertexArrays();
+		glBindVertexArray(vaoShapeId);
 		
 		
 		//--Upload vertex data to GPU
 		// Create a new Vertex Buffer Object to reference position data.
-		vboVerticesId = glGenBuffers();
+		vboShapeVerticesId = glGenBuffers();
 		// Upload vertex position data to attribute location 0.
-		glBindBuffer(GL_ARRAY_BUFFER, vboVerticesId);
+		glBindBuffer(GL_ARRAY_BUFFER, vboShapeVerticesId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 		
 		
 		//--Upload index data to GPU
 		// Create a new VBO to reference index data.
-		vboIndicesId = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
+		vboShapeIndicesId = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboShapeIndicesId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 		
 		
 		//--Upload color data to GPU
-		vboColorsId = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vboColorsId);
+		vboShapeColorsId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboShapeColorsId);
 		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 		
@@ -245,6 +254,91 @@ public class RotatingShapesDemo {
 		// Reset everything to default by unbinding targets.
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+	
+	private void setupGrid(){
+		vaoGridId = glGenVertexArrays();
+		glBindVertexArray(vaoGridId);
+		
+		//----Construct Grid Vertex Data.
+		int numColumns = 11;
+		int numRows = 23;
+		int numLines = numColumns + numRows;
+		int verticesPerLine = 2;
+		int numVertices = numLines * verticesPerLine; 
+		
+		gridVertices = new Vector3f[numVertices];
+		
+		for(int i = 0, j = 0; i < gridVertices.length; i+=2, j++){
+			if ( j < numColumns){
+				// Vertices for column lines.
+				gridVertices[i] =  new Vector3f(j, 0, 0);
+				gridVertices[i+1] = new Vector3f(j, numRows - 1, 0);
+			}
+			else {
+				// Vertices for row lines.
+				gridVertices[i] = new Vector3f(0, j - numColumns, 0);
+				gridVertices[i+1] = new Vector3f(numColumns - 1, j - numColumns, 0);
+			}
+		}
+		
+		// Scale and translate grid vertex coordinates so the coordinate system
+		// matches that of Shapes.
+		for(int i = 0; i < gridVertices.length; i++){
+			gridVertices[i].scale(2*blockHalfWidth);
+			gridVertices[i].translate(-1*blockHalfWidth, -1*blockHalfWidth, 0f);
+		}
+		
+		FloatBuffer gridVertexBuffer =
+				BufferUtils.createFloatBuffer(gridVertices.length * 3);
+		
+		
+		// Store vertex data in gridVertexBuffer
+		for(Vector3f v : gridVertices){
+			gridVertexBuffer.put(v.x);
+			gridVertexBuffer.put(v.y);
+			gridVertexBuffer.put(v.z);
+		}
+		gridVertexBuffer.flip();
+		
+		
+		
+		//----Construct Grid Color data.
+		Vector3f[] vertexColors = new Vector3f[numVertices];
+		// A shade of purple.
+		Vector3f gridColor = new Vector3f(204f/255, 157f/255, 207f/255);
+		for(int i = 0; i < vertexColors.length; i++){
+			vertexColors[i] = gridColor;
+		}
+		
+		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(vertexColors.length * 3);
+		// Store color data in colorBuffer.
+		for(Vector3f v : vertexColors){
+			colorBuffer.put(v.x);
+			colorBuffer.put(v.y);
+			colorBuffer.put(v.z);
+		}
+		colorBuffer.flip();
+		
+		
+		
+		//----Pass data to OpenGL
+		// Send vertex coordinates to OpenGL
+		vboGridVerticesId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboGridVerticesId);
+		glBufferData(GL_ARRAY_BUFFER, gridVertexBuffer, GL_STATIC_DRAW);
+		glVertexAttribPointer(POSITION_ATTRIBUTE_LOCATION, 3, GL_FLOAT, false, 0, 0);
+		
+		// Send vertex colors to OpenGL
+		vboGridColorsId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboGridColorsId);
+		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
+		glVertexAttribPointer(COLOR_ATTRIBUTE_LOCATION, 3, GL_FLOAT, false, 0, 0);
+		
+		
+		// Unbind targets.
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 	
@@ -326,7 +420,7 @@ public class RotatingShapesDemo {
 		// -- Update Vertices
 		// Update Shape vertex locations within the VBO.
 		verticesBuffer = ShapeUtils.createVertexFloatBuffer(currentShape, blockHalfWidth);
-		glBindBuffer(GL_ARRAY_BUFFER, vboVerticesId);
+		glBindBuffer(GL_ARRAY_BUFFER, vboShapeVerticesId);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, verticesBuffer);
 		
 		// Unbind the target.
@@ -353,23 +447,41 @@ public class RotatingShapesDemo {
 	
 	private void renderCycle() {
 		glClear(GL_COLOR_BUFFER_BIT);
-		
 		glUseProgram(programId);
 		
-		// Bind to the VAO that has all the information about the vertices
-		glBindVertexArray(vaoId);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+		renderGrid();
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndicesId);
-		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_BYTE, 0);
+		renderShape();
 		
 		// Put everything back to default (deselect)
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(POSITION_ATTRIBUTE_LOCATION);
+		glDisableVertexAttribArray(COLOR_ATTRIBUTE_LOCATION);
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+	
+	private void renderShape(){
+		// Bind to the VAO that has all the information about the vertices
+		glBindVertexArray(vaoShapeId);
+		glEnableVertexAttribArray(POSITION_ATTRIBUTE_LOCATION);
+		glEnableVertexAttribArray(COLOR_ATTRIBUTE_LOCATION);
 		
-		GLUtils.exitOnGLError("renderCycle");
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboShapeIndicesId);
+		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_BYTE, 0);
+		
+		
+		GLUtils.exitOnGLError("renderShape");
+	}
+	
+	private void renderGrid(){
+		// Bind to the VAO that has all the information about the vertices
+		glBindVertexArray(vaoGridId);
+		glEnableVertexAttribArray(POSITION_ATTRIBUTE_LOCATION);
+		glEnableVertexAttribArray(COLOR_ATTRIBUTE_LOCATION);
+		
+		glDrawArrays(GL_LINES, 0, gridVertices.length);
+		
+		GLUtils.exitOnGLError("renderGrid");
 	}
 	
 	private void destroyOpenGL() {		
@@ -378,13 +490,13 @@ public class RotatingShapesDemo {
 		
 		// Delete all VBOs
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDeleteBuffers(vboVerticesId);
-		glDeleteBuffers(vboIndicesId);
-		glDeleteBuffers(vboColorsId);
+		glDeleteBuffers(vboShapeVerticesId);
+		glDeleteBuffers(vboShapeIndicesId);
+		glDeleteBuffers(vboShapeColorsId);
 		
 		// Delete the VAO
 		glBindVertexArray(0);
-		glDeleteVertexArrays(vaoId);
+		glDeleteVertexArrays(vaoShapeId);
 		
 		// Delete Shaders
 		glDeleteShader(vertexShaderId);
