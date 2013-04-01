@@ -76,7 +76,8 @@ public class ShapeUtils {
 		int[] blockPositions = shape.getBlockPositions();
 		int blocksPerShape = 4;
 		int verticesPerBlock = 4;
-		Vector3f[] vertices = new Vector3f[ blocksPerShape * verticesPerBlock ];
+		int numVertices = blocksPerShape * verticesPerBlock;
+		Vector3f[] vertices = new Vector3f[ numVertices ];
 		float xCenter, yCenter;
 		
 		// For every col-row Block position pair, create 4 vertices for the Block's
