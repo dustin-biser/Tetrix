@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="source"/>
 	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl_util.jar" sourcepath="externals/lwjgl/lwjgl-source-2.8.5.zip"/>
 	<classpathentry kind="lib" path="externals/lwjgl/jar/lwjgl.jar" sourcepath="externals/lwjgl/lwjgl-source-2.8.5.zip">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Tetrix/externals/lwjgl/native/linux"/>
