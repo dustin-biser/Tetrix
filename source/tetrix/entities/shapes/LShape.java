@@ -14,9 +14,10 @@ public class LShape extends Shape {
 		this.shapeType = ShapeType.L;
 		
 		// Starting coordinates for Block-A.
-		setResetColumn(3);
-		setResetRow(20);
+		setBlockAResetColumn(3);
+		setBlockAResetRow(20);
 		
+		// Translate Shape to spawn position.
 		reset();
 	}
 }

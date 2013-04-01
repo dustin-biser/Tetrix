@@ -14,9 +14,10 @@ public class JShape extends Shape {
 		this.shapeType = ShapeType.J;
 		
 		// Starting coordinates for Block-A.
-		setResetColumn(3);
-		setResetRow(21);
+		setBlockAResetColumn(3);
+		setBlockAResetRow(21);
 		
+		// Translate Shape to spawn position.
 		reset();
 	}
 }

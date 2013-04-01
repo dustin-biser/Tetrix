@@ -19,9 +19,10 @@ public class TShape extends Shape {
 		this.shapeType = ShapeType.T;
 		
 		// Starting coordinates for Block-A.
-		setResetColumn(4);
-		setResetRow(20);
+		setBlockAResetColumn(4);
+		setBlockAResetRow(20);
 		
+		// Translate Shape to spawn position.
 		reset();
 	}
 }

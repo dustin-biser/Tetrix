@@ -14,9 +14,10 @@ public class OShape extends Shape {
 		this.shapeType = ShapeType.O;
 		
 		// Starting coordinates for Block-A.
-		setResetColumn(4);
-		setResetRow(20);
+		setBlockAResetColumn(4);
+		setBlockAResetRow(20);
 		
+		// Translate Shape to spawn position.
 		reset();
 	}
 }

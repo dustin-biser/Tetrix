@@ -9,9 +9,10 @@ public class IShape extends Shape {
 		this.shapeType = ShapeType.I;
 		
 		// Starting coordinates for Block-A.
-		setResetColumn(3);
-		setResetRow(20);
+		setBlockAResetColumn(3);
+		setBlockAResetRow(20);
 		
+		// Translate Shape to spawn position.
 		reset();
 	}
 }
