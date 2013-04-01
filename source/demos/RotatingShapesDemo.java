@@ -307,7 +307,7 @@ public class RotatingShapesDemo {
 		//----Construct Grid Color data.
 		Vector3f[] vertexColors = new Vector3f[numVertices];
 		// A shade of purple.
-		Vector3f gridColor = new Vector3f(204f/255, 157f/255, 207f/255);
+		Vector3f gridColor = new Vector3f(78f/255, 106f/255, 199f/255);
 		for(int i = 0; i < vertexColors.length; i++){
 			vertexColors[i] = gridColor;
 		}
