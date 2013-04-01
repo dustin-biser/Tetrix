@@ -24,8 +24,9 @@ public abstract class Shape {
 	private Direction[] constructionDirections;
 	private int[] constructionCoordinates;
 	
-	private int resetColumn;
-	private int resetRow;
+	// Column-Row coordinates for Block-A when reset() is called.
+	private int resetAColumn;
+	private int resetARow;
 	
 	protected ShapeType shapeType;
 
@@ -148,12 +149,12 @@ public abstract class Shape {
 	 * first created.  RotationState for this object is then set to SPAWN_STATE.
 	 */
 	public void reset() {
-		int colOffset = resetColumn;
-		int rowOffset = resetRow;
+		int colOffset = resetAColumn;
+		int rowOffset = resetARow;
 		
 		// Reset Block-A's position.
-		blocks[0].setColumn(resetColumn);
-		blocks[0].setRow(resetRow);
+		blocks[0].setColumn(resetAColumn);
+		blocks[0].setRow(resetARow);
 		
 		// Use construction directions if available.
 		if (constructionDirections != null) {
@@ -173,20 +174,20 @@ public abstract class Shape {
 			int column, row;
 			
 			// Reset Block-B's position.
-			column = constructionCoordinates[0] + resetColumn;
-			row = constructionCoordinates[1] + resetRow;
+			column = constructionCoordinates[0] + resetAColumn;
+			row = constructionCoordinates[1] + resetARow;
 			blocks[1].setColumn(column);
 			blocks[1].setRow(row);
 			
 			// Reset Block-C's position.
-			column = constructionCoordinates[2] + resetColumn;
-			row = constructionCoordinates[3] + resetRow;
+			column = constructionCoordinates[2] + resetAColumn;
+			row = constructionCoordinates[3] + resetARow;
 			blocks[2].setColumn(column);
 			blocks[2].setRow(row);
 			
 			// Reset Block-D's position.
-			column = constructionCoordinates[4] + resetColumn;
-			row = constructionCoordinates[5] + resetRow;
+			column = constructionCoordinates[4] + resetAColumn;
+			row = constructionCoordinates[5] + resetARow;
 			blocks[3].setColumn(column);
 			blocks[3].setRow(row);
 		}
@@ -199,8 +200,8 @@ public abstract class Shape {
 	 * Block-A will be located when this Shape's reset() method is called.
 	 * @param resetColumn
 	 */
-	protected void setResetColumn(int resetColumn){
-		this.resetColumn = resetColumn;
+	protected void setBlockAResetColumn(int resetColumn){
+		this.resetAColumn = resetColumn;
 	}
 	
 	/**
@@ -208,8 +209,8 @@ public abstract class Shape {
 	 * Block-A will be located when this Shape's reset() method is called.
 	 * @param resetRow
 	 */
-	protected void setResetRow(int resetRow){
-		this.resetRow = resetRow;
+	protected void setBlockAResetRow(int resetRow){
+		this.resetARow = resetRow;
 	}
 
 	/**
