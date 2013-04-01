@@ -12,5 +12,11 @@ public class LShape extends Shape {
 	public LShape(){
 		super(RIGHT, RIGHT, UP);
 		this.shapeType = ShapeType.L;
+		
+		// Starting coordinates for Block-A.
+		setResetColumn(3);
+		setResetRow(20);
+		
+		reset();
 	}
 }

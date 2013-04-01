@@ -24,6 +24,9 @@ public abstract class Shape {
 	private Direction[] constructionDirections;
 	private int[] constructionCoordinates;
 	
+	private int resetColumn;
+	private int resetRow;
+	
 	protected ShapeType shapeType;
 
 	/**
@@ -139,18 +142,18 @@ public abstract class Shape {
 	}
 	
 	/**
-	 * Resets Shape so that Block-A is translated to the origin (column=0, row=0),
-	 * and Blocks B, C, and D are placed adjacent to Block-A in the same fashion as
-	 * when the Shape was first created.  RotationState for this object is then set
-	 * to SPAWN_STATE.
+	 * Resets Shape so that Block-A is translated to position (resetColumn,
+	 * resetRow) (which, if not manually set defaults to 0,0) and Blocks B, C, and D
+	 * are placed adjacent to Block-A in the same fashion as when the Shape was
+	 * first created.  RotationState for this object is then set to SPAWN_STATE.
 	 */
 	public void reset() {
-		int rowOffset = 0;
-		int colOffset = 0;
+		int colOffset = resetColumn;
+		int rowOffset = resetRow;
 		
 		// Reset Block-A's position.
-		blocks[0].setColumn(0);
-		blocks[0].setRow(0);
+		blocks[0].setColumn(resetColumn);
+		blocks[0].setRow(resetRow);
 		
 		// Use construction directions if available.
 		if (constructionDirections != null) {
@@ -170,25 +173,43 @@ public abstract class Shape {
 			int column, row;
 			
 			// Reset Block-B's position.
-			column = constructionCoordinates[0];
-			row = constructionCoordinates[1];
+			column = constructionCoordinates[0] + resetColumn;
+			row = constructionCoordinates[1] + resetRow;
 			blocks[1].setColumn(column);
 			blocks[1].setRow(row);
 			
 			// Reset Block-C's position.
-			column = constructionCoordinates[2];
-			row = constructionCoordinates[3];
+			column = constructionCoordinates[2] + resetColumn;
+			row = constructionCoordinates[3] + resetRow;
 			blocks[2].setColumn(column);
 			blocks[2].setRow(row);
 			
 			// Reset Block-D's position.
-			column = constructionCoordinates[4];
-			row = constructionCoordinates[5];
+			column = constructionCoordinates[4] + resetColumn;
+			row = constructionCoordinates[5] + resetRow;
 			blocks[3].setColumn(column);
 			blocks[3].setRow(row);
 		}
 		
 		rotationState = SPAWN_STATE;
+	}
+	
+	/**
+	 * Sets the reset column for this Shape.  This is the column that
+	 * Block-A will be located when this Shape's reset() method is called.
+	 * @param resetColumn
+	 */
+	protected void setResetColumn(int resetColumn){
+		this.resetColumn = resetColumn;
+	}
+	
+	/**
+	 * Sets the reset row for this Shape.  This is the row that
+	 * Block-A will be located when this Shape's reset() method is called.
+	 * @param resetRow
+	 */
+	protected void setResetRow(int resetRow){
+		this.resetRow = resetRow;
 	}
 
 	/**

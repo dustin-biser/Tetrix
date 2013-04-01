@@ -81,6 +81,9 @@ public class RotatingShapesDemo {
 		this.setupShaders();
 		this.setupShapes();
 		this.setupMatrices();
+	
+		// Allow User to hold down movement keys for rapid firing.
+		Keyboard.enableRepeatEvents(true);
 		
 		while (!Display.isCloseRequested() && !escKeyPressed) {
 			this.processUserInputs();
@@ -172,6 +175,9 @@ public class RotatingShapesDemo {
 		// Translate modelMatrix by half a pixel so that lines land on pixel centers.
 		// This will allow corner pixels to be rendered for each Shape.
 		Matrix4f.translate(new Vector2f(0.5f,0.5f), modelMatrix, modelMatrix);
+		
+		// Translate modelMatrix so that Shapes start near the top of screen.
+		Matrix4f.translate(new Vector2f(-10*blockHalfWidth, -20*blockHalfWidth), modelMatrix, modelMatrix);
 		
 		// Create a FloatBuffer with the proper size to store matrices in GPU memory.
 		matrix44Buffer = BufferUtils.createFloatBuffer(16);

@@ -17,5 +17,11 @@ public class TShape extends Shape {
 	public TShape(){
 		super(0,1, -1,0, 1,0);
 		this.shapeType = ShapeType.T;
+		
+		// Starting coordinates for Block-A.
+		setResetColumn(4);
+		setResetRow(20);
+		
+		reset();
 	}
 }

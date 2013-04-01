@@ -12,5 +12,11 @@ public class JShape extends Shape {
 	public JShape(){
 		super(DOWN, RIGHT, RIGHT);
 		this.shapeType = ShapeType.J;
+		
+		// Starting coordinates for Block-A.
+		setResetColumn(3);
+		setResetRow(21);
+		
+		reset();
 	}
 }
