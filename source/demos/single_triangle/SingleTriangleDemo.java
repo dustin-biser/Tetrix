@@ -61,6 +61,10 @@ public class SingleTriangleDemo {
 			this.logicCycle();
 			this.renderCycle();
 			
+			if (Display.wasResized()){
+				displayResizedHandler();
+			}
+			
 			// Force a maximum FPS of about 60
 			Display.sync(60);
 			
@@ -70,6 +74,26 @@ public class SingleTriangleDemo {
 		
 		// Destroy OpenGL (Display)
 		this.destroyOpenGL();
+	}
+	
+	private void displayResizedHandler(){
+		int width = Display.getWidth();
+		int height = Display.getHeight();
+		float aspectRatio = ((float)width) / height;
+		float xSpan = 1;
+		float ySpan = 1;
+		
+		if (aspectRatio > 1){
+			xSpan *= aspectRatio;
+		}
+		else{
+			ySpan = xSpan / aspectRatio;
+		}
+			
+		projectionMatrix = 
+				GLUtils.createOrthoProjectionMatrix(-1*xSpan, xSpan, -1*ySpan, ySpan, -1, 1);
+		
+		glViewport(0, 0, width, height);
 	}
 	
 	private void setupOpenGL() {

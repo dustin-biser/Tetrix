@@ -45,8 +45,6 @@ public class RotatingShapesDemo {
 	private final String WINDOW_TITLE = "Rotating Shapes Demo";
 	private final int WINDOW_WIDTH = 600;
 	private final int WINDOW_HEIGHT = 800;
-	private final int GL_VIEWPORT_WIDTH = 600;
-	private final int GL_VIEWPORT_HEIGHT = 800;
 	
 	// OpenGL shader related variables
 	private int vaoShapeId;
@@ -81,6 +79,8 @@ public class RotatingShapesDemo {
 	private FloatBuffer verticesBuffer = null;
 	
 	boolean escKeyPressed = false;
+	private final int X_COORDINATE_LENGTH = 12 * 2 * (int)blockHalfWidth;
+	private final int Y_COORDINATE_LENGTH = 12 * 2 * (int)blockHalfWidth;
 	
 	
 	public RotatingShapesDemo() {
@@ -98,6 +98,11 @@ public class RotatingShapesDemo {
 			this.processUserInputs();
 			this.logicCycle();
 			this.renderCycle();
+			
+			if (Display.wasResized()){
+				displayResizedHandler();
+			}
+					
 			
 			// Force a maximum FPS of about 60
 			Display.sync(60);
@@ -122,8 +127,6 @@ public class RotatingShapesDemo {
 			Display.setTitle(WINDOW_TITLE);
 			Display.setResizable(true);
 			Display.create(pixelFormat, contextAtrributes);
-			
-			glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -135,8 +138,29 @@ public class RotatingShapesDemo {
 		// Setup an XNA like background color
 		glClearColor(0.4f, 0.6f, 0.9f, 0f);
 		
+		// Adjust projection matrix and glViewport based on window aspect ratio.
+		displayResizedHandler();
+	}
+	
+	private void displayResizedHandler(){
+		int width = Display.getWidth();
+		int height = Display.getHeight();
+		float aspectRatio = ((float)width) / height;
+		float xSpan = X_COORDINATE_LENGTH;
+		float ySpan = Y_COORDINATE_LENGTH;
+		
+		if (aspectRatio > 1){
+			xSpan *= aspectRatio;
+		}
+		else{
+			ySpan = xSpan / aspectRatio;
+		}
+			
+		projectionMatrix = 
+				GLUtils.createOrthoProjectionMatrix(-1*xSpan, xSpan, -1*ySpan, ySpan, -1, 1);
+		
 		// Map the internal OpenGL coordinate system to the entire screen
-		glViewport(0, 0, GL_VIEWPORT_WIDTH, GL_VIEWPORT_HEIGHT);
+		glViewport(0, 0, width, height);
 	}
 	
 	private void setupShaders() {		
@@ -170,14 +194,6 @@ public class RotatingShapesDemo {
 	}
 	
 	private void setupMatrices(){
-		float aspectRatio = GL_VIEWPORT_WIDTH / (float) GL_VIEWPORT_HEIGHT;
-		float scale = 0.05f;
-		
-		float xSpan = 1 / scale;
-		float ySpan = xSpan / aspectRatio;
-		
-		// Setup Projection Matrix so that xSpan / ySpan = aspectRatio.
-		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-1*xSpan, xSpan, -1*ySpan, ySpan, -1, 1);
 		viewMatrix = new Matrix4f();
 		modelMatrix = new Matrix4f();
 		
@@ -185,8 +201,9 @@ public class RotatingShapesDemo {
 		// This will allow corner pixels to be rendered for each Shape.
 		Matrix4f.translate(new Vector2f(0.5f,0.5f), modelMatrix, modelMatrix);
 		
-		// Translate modelMatrix so that Shapes start near the top of screen.
-		Matrix4f.translate(new Vector2f(-10*blockHalfWidth, -20*blockHalfWidth), modelMatrix, modelMatrix);
+		// Translate modelMatrix so that origin is near bottom left of screen.
+		Matrix4f.translate(new Vector2f(-10*blockHalfWidth, -20*blockHalfWidth),
+				modelMatrix, modelMatrix);
 		
 		// Create a FloatBuffer with the proper size to store matrices in GPU memory.
 		matrix44Buffer = BufferUtils.createFloatBuffer(16);
