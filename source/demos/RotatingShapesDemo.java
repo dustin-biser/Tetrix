@@ -79,8 +79,8 @@ public class RotatingShapesDemo {
 	private FloatBuffer verticesBuffer = null;
 	
 	boolean escKeyPressed = false;
-	private final int X_COORDINATE_LENGTH = 12 * 2 * (int)blockHalfWidth;
-	private final int Y_COORDINATE_LENGTH = 12 * 2 * (int)blockHalfWidth;
+	private final int X_COORDINATE_LENGTH = 14 * 2 * (int)blockHalfWidth;
+	private final int Y_COORDINATE_LENGTH = 14 * 2 * (int)blockHalfWidth;
 	
 	
 	public RotatingShapesDemo() {
@@ -196,10 +196,6 @@ public class RotatingShapesDemo {
 	private void setupMatrices(){
 		viewMatrix = new Matrix4f();
 		modelMatrix = new Matrix4f();
-		
-		// Translate modelMatrix by half a pixel so that lines land on pixel centers.
-		// This will allow corner pixels to be rendered for each Shape.
-		Matrix4f.translate(new Vector2f(0.5f,0.5f), modelMatrix, modelMatrix);
 		
 		// Translate modelMatrix so that origin is near bottom left of screen.
 		Matrix4f.translate(new Vector2f(-10*blockHalfWidth, -20*blockHalfWidth),
@@ -358,6 +354,7 @@ public class RotatingShapesDemo {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
+	
 	
 	private void processUserInputs(){
 		while(Keyboard.next()){
