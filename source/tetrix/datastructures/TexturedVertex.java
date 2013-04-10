@@ -53,6 +53,32 @@ public class TexturedVertex {
 		this.rgba = new float[] {r, g, b, 1f};
 	}
 	
+	// Constrution Helpers
+	public TexturedVertex withXYZ(float x, float y, float z) {
+		this.withXYZW(x, y, z, 1f);
+		return this;
+	}
+	
+	public TexturedVertex withRGB(float r, float g, float b) {
+		this.withRGBA(r, g, b, 1f);
+		return this;
+	}
+	
+	public TexturedVertex withST(float s, float t) {
+		this.st = new float[] {s, t};
+		return this;
+	}
+	
+	public TexturedVertex withXYZW(float x, float y, float z, float w) {
+		this.xyzw = new float[] {x, y, z, w};
+		return this;
+	}
+	
+	public TexturedVertex withRGBA(float r, float g, float b, float a) {
+		this.rgba = new float[] {r, g, b, 1f};
+		return this;
+	}
+	
 	// Getters	
 	public float[] getElements() {
 		float[] out = new float[TexturedVertex.elementCount];
