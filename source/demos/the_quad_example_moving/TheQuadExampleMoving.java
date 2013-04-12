@@ -22,7 +22,7 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import tetrix.datastructures.TexturedVertex;
+import tetrix.datastructures.ColoredTexturedVertex;
 import tetrix.utilities.GLUtils;
 import tetrix.utilities.ShaderUtils;
 
@@ -45,7 +45,7 @@ public class TheQuadExampleMoving {
 	private int vboId = 0;
 	private int vboiId = 0;
 	private int indicesCount = 0;
-	private TexturedVertex[] vertices = null;
+	private ColoredTexturedVertex[] vertices = null;
 	private ByteBuffer verticesByteBuffer = null;
 	// Shader variables
 	private int vsId = 0;
@@ -145,21 +145,21 @@ public class TheQuadExampleMoving {
 	}
 	
 	private void setupQuad() {
-		// We'll define our quad using 4 vertices of the custom 'TexturedVertex' class
-		TexturedVertex v0 = new TexturedVertex(); 
+		// We'll define our quad using 4 vertices of the custom 'ColoredTexturedVertex' class
+		ColoredTexturedVertex v0 = new ColoredTexturedVertex(); 
 		v0.setXYZ(-0.5f, 0.5f, 0); v0.setRGB(1, 0, 0); v0.setST(0, 0);
-		TexturedVertex v1 = new TexturedVertex(); 
+		ColoredTexturedVertex v1 = new ColoredTexturedVertex(); 
 		v1.setXYZ(-0.5f, -0.5f, 0); v1.setRGB(0, 1, 0); v1.setST(0, 1);
-		TexturedVertex v2 = new TexturedVertex(); 
+		ColoredTexturedVertex v2 = new ColoredTexturedVertex(); 
 		v2.setXYZ(0.5f, -0.5f, 0); v2.setRGB(0, 0, 1); v2.setST(1, 1);
-		TexturedVertex v3 = new TexturedVertex(); 
+		ColoredTexturedVertex v3 = new ColoredTexturedVertex(); 
 		v3.setXYZ(0.5f, 0.5f, 0); v3.setRGB(1, 1, 1); v3.setST(1, 0);
 		
-		vertices = new TexturedVertex[] {v0, v1, v2, v3};
+		vertices = new ColoredTexturedVertex[] {v0, v1, v2, v3};
 		
 		// Put each 'Vertex' in one FloatBuffer
 		verticesByteBuffer = BufferUtils.createByteBuffer(vertices.length * 
-				TexturedVertex.stride);				
+				ColoredTexturedVertex.stride);				
 		FloatBuffer verticesFloatBuffer = verticesByteBuffer.asFloatBuffer();
 		for (int i = 0; i < vertices.length; i++) {
 			// Add position, color and texture floats to the buffer
@@ -188,14 +188,14 @@ public class TheQuadExampleMoving {
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesFloatBuffer, GL15.GL_STREAM_DRAW);
 		
 		// Put the position coordinates in attribute list 0
-		GL20.glVertexAttribPointer(0, TexturedVertex.positionElementCount, GL11.GL_FLOAT, 
-				false, TexturedVertex.stride, TexturedVertex.positionByteOffset);
+		GL20.glVertexAttribPointer(0, ColoredTexturedVertex.positionElementCount, GL11.GL_FLOAT, 
+				false, ColoredTexturedVertex.stride, ColoredTexturedVertex.positionByteOffset);
 		// Put the color components in attribute list 1
-		GL20.glVertexAttribPointer(1, TexturedVertex.colorElementCount, GL11.GL_FLOAT, 
-				false, TexturedVertex.stride, TexturedVertex.colorByteOffset);
+		GL20.glVertexAttribPointer(1, ColoredTexturedVertex.colorElementCount, GL11.GL_FLOAT, 
+				false, ColoredTexturedVertex.stride, ColoredTexturedVertex.colorByteOffset);
 		// Put the texture coordinates in attribute list 2
-		GL20.glVertexAttribPointer(2, TexturedVertex.textureElementCount, GL11.GL_FLOAT, 
-				false, TexturedVertex.stride, TexturedVertex.textureByteOffset);
+		GL20.glVertexAttribPointer(2, ColoredTexturedVertex.textureElementCount, GL11.GL_FLOAT, 
+				false, ColoredTexturedVertex.stride, ColoredTexturedVertex.textureByteOffset);
 		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
