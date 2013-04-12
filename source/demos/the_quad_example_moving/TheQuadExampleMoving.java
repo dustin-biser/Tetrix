@@ -40,6 +40,7 @@ public class TheQuadExampleMoving {
 	private final int WIDTH = 800;
 	private final int HEIGHT = 600;
 	private final double PI = 3.14159265358979323846;
+	
 	// Quad variables
 	private int vaoId = 0;
 	private int vboId = 0;
@@ -47,13 +48,17 @@ public class TheQuadExampleMoving {
 	private int indicesCount = 0;
 	private ColoredTexturedVertex[] vertices = null;
 	private ByteBuffer verticesByteBuffer = null;
+	
 	// Shader variables
 	private int vsId = 0;
 	private int fsId = 0;
 	private int pId = 0;
+	private int baseImageLoc = 0;
+	
 	// Texture variables
 	private int[] texIds = new int[] {0, 0};
 	private int textureSelector = 0;
+	
 	// Moving variables
 	private int projectionMatrixLocation = 0;
 	private int viewMatrixLocation = 0;
@@ -116,6 +121,14 @@ public class TheQuadExampleMoving {
 		
 		texIds[1] = this.loadPNGTexture("resources/textures/stGrid2.png",
 				GL13.GL_TEXTURE0);
+		
+		// Set texture sampler to use Texture Image Unit Index 0.
+		baseImageLoc = GL20.glGetUniformLocation(pId, "texture_diffuse");
+		GL20.glUseProgram(pId);
+		GL20.glUniform1i(baseImageLoc, 0);
+		
+		// Restore Defaults
+		GL20.glUseProgram(0);
 		
 		this.exitOnGLError("setupTexture");
 	}
