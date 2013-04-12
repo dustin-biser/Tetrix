@@ -111,8 +111,11 @@ public class TheQuadExampleMoving {
 	}
 
 	private void setupTextures() {
-		texIds[0] = this.loadPNGTexture("resources/textures/stGrid1.png", GL13.GL_TEXTURE0);
-		texIds[1] = this.loadPNGTexture("resources/textures/stGrid2.png", GL13.GL_TEXTURE0);
+		texIds[0] = this.loadPNGTexture("resources/textures/stGrid1.png",
+				GL13.GL_TEXTURE0);
+		
+		texIds[1] = this.loadPNGTexture("resources/textures/stGrid2.png",
+				GL13.GL_TEXTURE0);
 		
 		this.exitOnGLError("setupTexture");
 	}
@@ -442,10 +445,10 @@ public class TheQuadExampleMoving {
 		
 		// Create a new texture object in memory and bind it
 		int texId = GL11.glGenTextures();
-		GL13.glActiveTexture(textureUnit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);
 		
-		// All RGB bytes are aligned to each other and each component is 1 byte
+		// All RGB bytes are aligned to each other and each component is 1 byte.
+		// Alignment setting used for sending data to OpenGL.
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 		
 		// Upload the texture data and generate mip maps (for scaling)
@@ -462,6 +465,10 @@ public class TheQuadExampleMoving {
 				GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, 
 				GL11.GL_LINEAR_MIPMAP_LINEAR);
+		
+		
+		// Restore defaults.
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		
 		this.exitOnGLError("loadPNGTexture");
 		
