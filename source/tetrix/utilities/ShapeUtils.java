@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector3f;
 
+import tetrix.entities.shapes.Block;
 import tetrix.entities.shapes.Shape;
 
 /**

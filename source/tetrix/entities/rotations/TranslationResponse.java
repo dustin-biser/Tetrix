@@ -1,5 +1,6 @@
 package tetrix.entities.rotations;
 
+import tetrix.entities.shapes.Block;
 import tetrix.entities.shapes.Shape;
 
 
@@ -57,8 +58,8 @@ public class TranslationResponse {
 	 * Constructs a TranslationResponse representing how to translate a
 	 * {@link Shape}'s B-Block.<br>
 	 * 
-	 * @param aColOffset - number of columns to shift Block-B by.
-	 * @param aRowOffset - number of rows to shift Block-B by.
+	 * @param bColOffset - number of columns to shift Block-B by.
+	 * @param bRowOffset - number of rows to shift Block-B by.
 	 */
 	public TranslationResponse translateB(int bColOffset, int bRowOffset){
 		this.bColOffset = bColOffset;
@@ -71,8 +72,8 @@ public class TranslationResponse {
 	 * Constructs a TranslationResponse representing how to translate a
 	 * {@link Shape}'s C-Block.<br>
 	 * 
-	 * @param aColOffset - number of columns to shift Block-C by.
-	 * @param aRowOffset - number of rows to shift Block-C by.
+	 * @param cColOffset - number of columns to shift Block-C by.
+	 * @param cRowOffset - number of rows to shift Block-C by.
 	 */
 	public TranslationResponse translateC(int cColOffset, int cRowOffset){
 		this.cColOffset = cColOffset;
@@ -85,8 +86,8 @@ public class TranslationResponse {
 	 * Constructs a TranslationResponse representing how to translate a
 	 * {@link Shape}'s D-Block.<br>
 	 * 
-	 * @param aColOffset - number of columns to shift Block-D by.
-	 * @param aRowOffset - number of rows to shift Block-D by.
+	 * @param dColOffset - number of columns to shift Block-D by.
+	 * @param dRowOffset - number of rows to shift Block-D by.
 	 */
 	public TranslationResponse translateD(int dColOffset, int dRowOffset){
 		this.dColOffset = dColOffset;
