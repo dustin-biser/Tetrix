@@ -1,9 +1,13 @@
 package tetrix.datastructures;
 
 public class TexturedVertex {
-	// Vertex data
+	// Position data
 	private float[] xyzw = new float[] {0f, 0f, 0f, 1f};
+	
+	// Color data
 	private float[] rgba = new float[] {1f, 1f, 1f, 1f};
+	
+	// Texture data
 	private float[] st = new float[] {0f, 0f};
 	
 	// The amount of bytes an element has
@@ -27,6 +31,7 @@ public class TexturedVertex {
 	// The amount of elements that a vertex has
 	public static final int elementCount = positionElementCount + 
 			colorElementCount + textureElementCount;	
+	
 	// The size of a vertex in bytes, like in C/C++: sizeof(Vertex)
 	public static final int stride = positionBytesCount + colorByteCount + 
 			textureByteCount;
@@ -43,6 +48,7 @@ public class TexturedVertex {
 	public void setST(float s, float t) {
 		this.st = new float[] {s, t};
 	}
+	
 	
 	public void setXYZW(float x, float y, float z, float w) {
 		this.xyzw = new float[] {x, y, z, w};
@@ -93,7 +99,7 @@ public class TexturedVertex {
 		out[i++] = this.rgba[1];
 		out[i++] = this.rgba[2];
 		out[i++] = this.rgba[3];
-		// Insert ST elements
+		// Insert STRQ elements
 		out[i++] = this.st[0];
 		out[i++] = this.st[1];
 		
@@ -110,5 +116,10 @@ public class TexturedVertex {
 	
 	public float[] getST() {
 		return new float[] {this.st[0], this.st[1]};
+	}
+	
+	public void scaleST(float scalar){
+		this.st[0] *= scalar;
+		this.st[1] *= scalar;
 	}
 }
