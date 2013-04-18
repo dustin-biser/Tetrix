@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import tetrix.datastructures.TexturedVertex;
@@ -43,10 +44,10 @@ public class ManyMovingQuads {
 	
 	// Setup variables
 	private final String WINDOW_TITLE = "Many Moving Quads";
-	private final int WIDTH = 800;
+	private final int WIDTH = 600;
 	private final int HEIGHT = 600;
 	private final double PI = 3.14159265358979323846;
-	private final int numQuads = 4;
+	private final int numQuads = 7;
 	
 	// Quad variables
 	private int[] vaoList = new int[numQuads];
@@ -101,7 +102,7 @@ public class ManyMovingQuads {
 
 	private void setupMatrices() {
 		// Setup projection matrix
-		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-4f, 4f, -4f, 4f, -1f, 1f);
+		projectionMatrix = GLUtils.createOrthoProjectionMatrix(-6f, 6f, -6f, 6f, -1f, 1f);
 		
 		// Setup view matrix
 		viewMatrix = new Matrix4f();
@@ -116,13 +117,19 @@ public class ManyMovingQuads {
 	private void setupTextures() {
 		// Load PNG images to specific texture objects, and associate each texture
 		// with a specific Texture Image Unit.
-		texIds[0] = this.loadPNGTexture("resources/textures/stGrid1.png");
+		texIds[0] = this.loadPNGTexture("resources/textures/blue-block.png");
 		
-		texIds[1] = this.loadPNGTexture("resources/textures/stGrid1.png");
+		texIds[1] = this.loadPNGTexture("resources/textures/cyan-block.png");
 		
-		texIds[2] = this.loadPNGTexture("resources/textures/stGrid1.png");
+		texIds[2] = this.loadPNGTexture("resources/textures/green-block.png");
 		
-		texIds[3] = this.loadPNGTexture("resources/textures/stGrid1.png");
+		texIds[3] = this.loadPNGTexture("resources/textures/orange-block.png");
+		
+		texIds[4] = this.loadPNGTexture("resources/textures/purple-block.png");
+		
+		texIds[5] = this.loadPNGTexture("resources/textures/red-block.png");
+		
+		texIds[6] = this.loadPNGTexture("resources/textures/yellow-block.png");
 		
 		// Set texture sampler to use Texture Image Unit Index 0.
 		int textureSamplerLoc = GL20.glGetUniformLocation(programId, "texture_diffuse");
@@ -163,6 +170,8 @@ public class ManyMovingQuads {
 	}
 	
 	private void setupQuads() {
+		// Create an array of FloatBuffers, where each FloatBuffer contains the
+		// vertices for one quad.
 		FloatBuffer[] vertexBufferArray = createQuadVertexBuffers();
 		
 		// Generate 4 VAOs, one for each Quad.  Load vertex data into a separate VBO
@@ -188,7 +197,8 @@ public class ManyMovingQuads {
 					false, TexturedVertex.stride, TexturedVertex.textureByteOffset);
 		}
 		
-		// OpenGL expects to draw vertices in counter clockwise order by default
+		// Vertex indices for tessellating each quad into 2 triangles, with
+		// indices given in counter clockwise order.
 		byte[] indices = {
 				0, 1, 2,
 				2, 3, 0
@@ -223,46 +233,48 @@ public class ManyMovingQuads {
 		FloatBuffer[] result = new FloatBuffer[numQuads];
 		ByteBuffer verticesByteBuffer;
 		FloatBuffer verticesFloatBuffer;
+		
+		TexturedVertex[] vertices;
 		TexturedVertex topLeft = new TexturedVertex();
 		TexturedVertex bottomLeft = new TexturedVertex();
 		TexturedVertex bottomRight = new TexturedVertex();
 		TexturedVertex topRight = new TexturedVertex();
-		TexturedVertex[] vertices;
+		
+		Vector3f topLeft_xyz;
+		Vector3f bottomLeft_xyz;
+		Vector3f bottomRight_xyz;
+		Vector3f topRight_xyz;
+		
+		Vector2f delta;
+		double w = 2*Math.PI / 7D; // angular frequency
 		
 		for(int i = 0; i < numQuads; i++){
-			switch(i){
-			case 0:
-				topLeft.withXYZ(-1.0f-2f, 1.0f+2f, 0).withST(0, 0);
-				bottomLeft.withXYZ(-1.0f-2f, -1.0f+2f, 0).withST(0, 1);
-				bottomRight.withXYZ(1.0f-2f, -1.0f+2f, 0).withST(1, 1);
-				topRight.withXYZ(1.0f-2f, 1.0f+2f, 0).withST(1, 0);
-				break;
-			case 1:
-				topLeft.withXYZ(-1.0f+2f, 1.0f+2f, 0).withST(0, 4);
-				bottomLeft.withXYZ(-1.0f+2f, -1.0f+2f, 0).withST(0, 5);
-				bottomRight.withXYZ(1.0f+2, -1.0f+2f, 0).withST(1, 5);
-				topRight.withXYZ(1.0f+2f, 1.0f+2f, 0).withST(1, 4);
-				break;
-			case 2:
-				topLeft.withXYZ(-1.0f-2f, 1.0f-2f, 0).withST(7, 1);
-				bottomLeft.withXYZ(-1.0f-2f, -1.0f-2f, 0).withST(7, 2);
-				bottomRight.withXYZ(1.0f-2, -1.0f-2f, 0).withST(8, 2);
-				topRight.withXYZ(1.0f-2f, 1.0f-2f, 0).withST(8, 1);
-				break;
-			case 3:
-				topLeft.withXYZ(-1.0f+2f, 1.0f-2f, 0).withST(8, 6);
-				bottomLeft.withXYZ(-1.0f+2f, -1.0f-2f, 0).withST(8, 7);
-				bottomRight.withXYZ(1.0f+2, -1.0f-2f, 0).withST(9, 7);
-				topRight.withXYZ(1.0f+2f, 1.0f-2f, 0).withST(9, 6);
-				break;
-			}
+			topLeft_xyz = new Vector3f(-1, 1, 0);
+			bottomLeft_xyz = new Vector3f(-1, -1, 0);
+			bottomRight_xyz = new Vector3f(1, -1, 0);
+			topRight_xyz = new Vector3f(1, 1, 0);
 			
-			// Clamp texture coordinates to the range [0,1].
-			float textureScale = 1/10f;
-			topLeft.scaleST(textureScale);
-			bottomLeft.scaleST(textureScale);
-			bottomRight.scaleST(textureScale);
-			topRight.scaleST(textureScale);
+			//-- Each quad starts out at the origin, and then we translate each around
+			//   circumference of circle.
+			delta = new Vector2f((float)Math.cos(w * i), (float)Math.sin(w *i));
+			delta.scale(4f);
+			
+			topLeft_xyz.translate(delta.x, delta.y, 0);
+			bottomLeft_xyz.translate(delta.x, delta.y, 0);
+			bottomRight_xyz.translate(delta.x, delta.y, 0);
+			topRight_xyz.translate(delta.x, delta.y, 0);
+			
+			topLeft.setXYZ(topLeft_xyz);
+			topLeft.setST(0, 0);
+			
+			bottomLeft.setXYZ(bottomLeft_xyz);
+			bottomLeft.setST(0, 1);
+			
+			bottomRight.setXYZ(bottomRight_xyz);
+			bottomRight.setST(1, 1);
+			
+			topRight.setXYZ(topRight_xyz);
+			topRight.setST(1, 0);
 			
 			vertices = new TexturedVertex[] {topLeft, bottomLeft, bottomRight, topRight};
 		
@@ -401,11 +413,11 @@ public class ManyMovingQuads {
 		
 		GL20.glUseProgram(programId);
 		
+		// Set the active texture image unit.
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		
 		// Render each Quad separately.
 		for(int i = 0; i < numQuads; i++){
-			// Set the active texture image unit.
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		
 			// Bind the texture
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texIds[i]);
 			
