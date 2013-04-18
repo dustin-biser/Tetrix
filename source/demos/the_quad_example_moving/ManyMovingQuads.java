@@ -264,16 +264,16 @@ public class ManyMovingQuads {
 			bottomRight_xyz.translate(delta.x, delta.y, 0);
 			topRight_xyz.translate(delta.x, delta.y, 0);
 			
-			topLeft.setXYZ(topLeft_xyz);
+			topLeft.setXYZ(topLeft_xyz.x, topLeft_xyz.y, topLeft_xyz.z);
 			topLeft.setST(0, 0);
 			
-			bottomLeft.setXYZ(bottomLeft_xyz);
+			bottomLeft.setXYZ(bottomLeft_xyz.x, bottomLeft_xyz.y, bottomLeft_xyz.z);
 			bottomLeft.setST(0, 1);
 			
-			bottomRight.setXYZ(bottomRight_xyz);
+			bottomRight.setXYZ(bottomRight_xyz.x, bottomRight_xyz.y, bottomRight_xyz.z);
 			bottomRight.setST(1, 1);
 			
-			topRight.setXYZ(topRight_xyz);
+			topRight.setXYZ(topRight_xyz.x, topRight_xyz.y, topRight_xyz.z);
 			topRight.setST(1, 0);
 			
 			vertices = new TexturedVertex[] {topLeft, bottomLeft, bottomRight, topRight};
