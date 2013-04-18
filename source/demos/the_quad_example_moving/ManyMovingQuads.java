@@ -42,7 +42,7 @@ public class ManyMovingQuads {
 	}
 	
 	// Setup variables
-	private final String WINDOW_TITLE = "The Quad: Moving";
+	private final String WINDOW_TITLE = "Many Moving Quads";
 	private final int WIDTH = 800;
 	private final int HEIGHT = 600;
 	private final double PI = 3.14159265358979323846;
@@ -118,9 +118,9 @@ public class ManyMovingQuads {
 		// with a specific Texture Image Unit.
 		texIds[0] = this.loadPNGTexture("resources/textures/stGrid1.png");
 		
-		texIds[1] = this.loadPNGTexture("resources/textures/stGrid2.png");
+		texIds[1] = this.loadPNGTexture("resources/textures/stGrid1.png");
 		
-		texIds[2] = this.loadPNGTexture("resources/textures/stGrid2.png");
+		texIds[2] = this.loadPNGTexture("resources/textures/stGrid1.png");
 		
 		texIds[3] = this.loadPNGTexture("resources/textures/stGrid1.png");
 		
@@ -232,34 +232,38 @@ public class ManyMovingQuads {
 		for(int i = 0; i < numQuads; i++){
 			switch(i){
 			case 0:
-				topLeft.setXYZ(-1.0f-2f, 1.0f+2f, 0);
-				bottomLeft.setXYZ(-1.0f-2f, -1.0f+2f, 0);
-				bottomRight.setXYZ(1.0f-2f, -1.0f+2f, 0);
-				topRight.setXYZ(1.0f-2f, 1.0f+2f, 0);
+				topLeft.withXYZ(-1.0f-2f, 1.0f+2f, 0).withST(0, 0);
+				bottomLeft.withXYZ(-1.0f-2f, -1.0f+2f, 0).withST(0, 1);
+				bottomRight.withXYZ(1.0f-2f, -1.0f+2f, 0).withST(1, 1);
+				topRight.withXYZ(1.0f-2f, 1.0f+2f, 0).withST(1, 0);
 				break;
 			case 1:
-				topLeft.setXYZ(-1.0f+2f, 1.0f+2f, 0);
-				bottomLeft.setXYZ(-1.0f+2f, -1.0f+2f, 0);
-				bottomRight.setXYZ(1.0f+2, -1.0f+2f, 0);
-				topRight.setXYZ(1.0f+2f, 1.0f+2f, 0);
+				topLeft.withXYZ(-1.0f+2f, 1.0f+2f, 0).withST(0, 4);
+				bottomLeft.withXYZ(-1.0f+2f, -1.0f+2f, 0).withST(0, 5);
+				bottomRight.withXYZ(1.0f+2, -1.0f+2f, 0).withST(1, 5);
+				topRight.withXYZ(1.0f+2f, 1.0f+2f, 0).withST(1, 4);
 				break;
 			case 2:
-				topLeft.setXYZ(-1.0f-2f, 1.0f-2f, 0);
-				bottomLeft.setXYZ(-1.0f-2f, -1.0f-2f, 0);
-				bottomRight.setXYZ(1.0f-2, -1.0f-2f, 0);
-				topRight.setXYZ(1.0f-2f, 1.0f-2f, 0);
+				topLeft.withXYZ(-1.0f-2f, 1.0f-2f, 0).withST(7, 1);
+				bottomLeft.withXYZ(-1.0f-2f, -1.0f-2f, 0).withST(7, 2);
+				bottomRight.withXYZ(1.0f-2, -1.0f-2f, 0).withST(8, 2);
+				topRight.withXYZ(1.0f-2f, 1.0f-2f, 0).withST(8, 1);
 				break;
 			case 3:
-				topLeft.setXYZ(-1.0f+2f, 1.0f-2f, 0);
-				bottomLeft.setXYZ(-1.0f+2f, -1.0f-2f, 0);
-				bottomRight.setXYZ(1.0f+2, -1.0f-2f, 0);
-				topRight.setXYZ(1.0f+2f, 1.0f-2f, 0);
+				topLeft.withXYZ(-1.0f+2f, 1.0f-2f, 0).withST(8, 6);
+				bottomLeft.withXYZ(-1.0f+2f, -1.0f-2f, 0).withST(8, 7);
+				bottomRight.withXYZ(1.0f+2, -1.0f-2f, 0).withST(9, 7);
+				topRight.withXYZ(1.0f+2f, 1.0f-2f, 0).withST(9, 6);
 				break;
 			}
-			topLeft.setST(0, 0);
-			bottomLeft.setST(0, 1);
-			bottomRight.setST(1, 1);
-			topRight.setST(1, 0);
+			
+			// Clamp texture coordinates to the range [0,1].
+			float textureScale = 1/10f;
+			topLeft.scaleST(textureScale);
+			bottomLeft.scaleST(textureScale);
+			bottomRight.scaleST(textureScale);
+			topRight.scaleST(textureScale);
+			
 			vertices = new TexturedVertex[] {topLeft, bottomLeft, bottomRight, topRight};
 		
 			// Put each 'Vertex' in one FloatBuffer
@@ -401,7 +405,7 @@ public class ManyMovingQuads {
 		for(int i = 0; i < numQuads; i++){
 			// Set the active texture image unit.
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			
+		
 			// Bind the texture
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texIds[i]);
 			
