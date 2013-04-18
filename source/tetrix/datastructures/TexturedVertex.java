@@ -1,9 +1,5 @@
 package tetrix.datastructures;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
-
 public class TexturedVertex {
 	// Position data
 	private float[] xyzw = new float[] {0f, 0f, 0f, 1f};
@@ -45,10 +41,6 @@ public class TexturedVertex {
 		this.setXYZW(x, y, z, 1f);
 	}
 	
-	public void setXYZ(Vector3f xyz){
-		this.setXYZW(xyz.x, xyz.y, xyz.z, 1f);
-	}
-	
 	public void setRGB(float r, float g, float b) {
 		this.setRGBA(r, g, b, 1f);
 	}
@@ -57,20 +49,8 @@ public class TexturedVertex {
 		this.st = new float[] {s, t};
 	}
 	
-	public void setST(Vector2f st) {
-		this.st[0] = st.x;
-		this.st[1] = st.y;
-	}
-	
 	public void setXYZW(float x, float y, float z, float w) {
 		this.xyzw = new float[] {x, y, z, w};
-	}
-	
-	public void setXYZW(Vector4f xyzw){
-		this.xyzw[0] = xyzw.x;
-		this.xyzw[1] = xyzw.y;
-		this.xyzw[2] = xyzw.z;
-		this.xyzw[3] = xyzw.w;
 	}
 	
 	public void setRGBA(float r, float g, float b, float a) {
