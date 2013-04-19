@@ -19,13 +19,13 @@ public class TexturedVertex {
 	public static final int textureElementCount = 2;
 	
 	// Bytes per parameter
-	public static final int positionBytesCount = positionElementCount * elementBytes;
+	public static final int positionByteCount = positionElementCount * elementBytes;
 	public static final int colorByteCount = colorElementCount * elementBytes;
 	public static final int textureByteCount = textureElementCount * elementBytes;
 	
 	// Byte offsets per parameter
 	public static final int positionByteOffset = 0;
-	public static final int colorByteOffset = positionByteOffset + positionBytesCount;
+	public static final int colorByteOffset = positionByteOffset + positionByteCount;
 	public static final int textureByteOffset = colorByteOffset + colorByteCount;
 	
 	// The amount of elements that a vertex has
@@ -33,7 +33,7 @@ public class TexturedVertex {
 			colorElementCount + textureElementCount;	
 	
 	// The size of a vertex in bytes, like in C/C++: sizeof(Vertex)
-	public static final int stride = positionBytesCount + colorByteCount + 
+	public static final int stride = positionByteCount + colorByteCount + 
 			textureByteCount;
 	
 	// Setters
