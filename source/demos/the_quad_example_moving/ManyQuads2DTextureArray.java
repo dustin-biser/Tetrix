@@ -122,6 +122,9 @@ public class ManyQuads2DTextureArray {
 	private void setupTextures() {
 		loadPNGTextures();
 		
+		// Set the active texture image unit.
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		
 		// Set texture sampler to use Texture Image Unit Index 0.
 		int textureSamplerLoc = GL20.glGetUniformLocation(programId, "texture_diffuse");
 		GL20.glUseProgram(programId);
@@ -426,9 +429,6 @@ public class ManyQuads2DTextureArray {
 		// Bind to the VAO that has all the information about the vertices
 		GL30.glBindVertexArray(vao);
 		
-		// Set the active texture image unit.
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		
 		// Bind the texture
 		GL11.glBindTexture(GL30.GL_TEXTURE_2D_ARRAY, texId);
 		
@@ -438,7 +438,6 @@ public class ManyQuads2DTextureArray {
 		
 		// Draw the vertices
 		GL11.glDrawElements(GL11.GL_TRIANGLES, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
-		
 		
 		// Put everything back to default (deselect)
 		GL20.glDisableVertexAttribArray(0);
